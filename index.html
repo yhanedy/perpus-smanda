@@ -15,12 +15,10 @@
 </head>
 <body class="min-h-screen flex flex-col md:flex-row pb-20 md:pb-0">
 
-  <!-- MOBILE TOP HEADER -->
   <header class="md:hidden deep-teal text-white px-4 py-3.5 text-center tracking-widest font-bold text-xs uppercase shadow-sm sticky top-0 z-30">
     PERPUSTAKAAN SMAN 2 KARANGANYAR
   </header>
 
-  <!-- DESKTOP LEFT SIDEBAR -->
   <aside class="hidden md:flex md:w-64 bg-white border-r border-stone-200/80 flex-col justify-between p-6 sticky top-0 h-screen shrink-0">
     <div>
       <div class="flex items-center gap-3 mb-9">
@@ -31,7 +29,7 @@
         </div>
       </div>
 
-      <div class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-3 px-2">Menu Utama</div>
+      <div class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-3 px-2">Menu Perpustakaan</div>
       <nav class="space-y-1.5" id="desktop-nav">
         <button onclick="setMenu('discover')" data-menu="discover" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition">
           <span class="nav-icon w-7 h-7 rounded-lg flex items-center justify-center">🏠</span>
@@ -43,30 +41,24 @@
         </button>
         <button onclick="setMenu('referensi')" data-menu="referensi" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition">
           <span class="nav-icon w-7 h-7 rounded-lg flex items-center justify-center">🔐</span>
-          <span class="flex items-center gap-1.5">Referensi <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold">Login</span></span>
-        </button>
-        <button id="nav-admin-desktop" onclick="setMenu('admin')" data-menu="admin" class="hidden nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition">
-          <span class="nav-icon w-7 h-7 rounded-lg flex items-center justify-center">⚙️</span>
-          <span>Menu Pengelola</span>
+          <span class="flex items-center gap-1.5">Referensi <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold">Siswa</span></span>
         </button>
       </nav>
     </div>
 
-    <div class="pt-4 border-t border-stone-100">
+    <div class="pt-4 border-t border-stone-100 space-y-3">
       <div id="sidebar-auth-box"></div>
+      <a href="/admin.html" class="block text-center text-[11px] text-stone-400 hover:text-stone-600">Login Pengelola / Admin →</a>
     </div>
   </aside>
 
-  <!-- MAIN CONTENT AREA -->
   <main class="flex-1 flex flex-col min-w-0">
-    <!-- WARM SAND TOP HERO / SEARCH SECTION -->
     <div class="warm-sand px-4 md:px-10 pt-5 pb-8 md:pt-8 md:pb-10 rounded-b-3xl md:rounded-none">
       <div class="hidden md:flex items-center justify-between mb-6">
         <h1 id="page-heading" class="text-2xl font-bold text-stone-900">Jelajah Koleksi</h1>
         <div id="desktop-user-pill"></div>
       </div>
 
-      <!-- Search Bar Gabungan -->
       <div class="max-w-2xl bg-white p-1.5 rounded-2xl shadow-sm border border-stone-200/70 flex items-center gap-2">
         <select id="category-select" onchange="onFilterChange()" class="bg-transparent text-xs md:text-sm font-medium text-stone-600 pl-3 pr-2 py-2 outline-none border-r border-stone-200 max-w-[130px] md:max-w-[170px]">
           <option value="all">Semua Kategori</option>
@@ -77,17 +69,14 @@
         </button>
       </div>
 
-      <!-- Mobile Quick Login Status -->
       <div class="md:hidden mt-3 flex items-center justify-between text-xs text-stone-600" id="mobile-auth-strip"></div>
     </div>
 
-    <!-- DYNAMIC VIEW CONTAINER -->
     <div id="main-view" class="px-4 md:px-10 py-6 flex-1 space-y-8">
       <div class="text-center py-12 text-stone-400 text-sm">Memuat koleksi perpustakaan...</div>
     </div>
   </main>
 
-  <!-- MOBILE BOTTOM NAVIGATION BAR -->
   <nav class="md:hidden fixed bottom-0 inset-x-0 deep-teal text-white/80 flex items-center justify-around py-2.5 px-2 z-30 shadow-lg">
     <button onclick="setMenu('discover')" class="mob-nav flex flex-col items-center gap-0.5 text-[10px]" data-menu="discover">
       <span class="text-base">🏠</span><span>Beranda</span>
@@ -98,37 +87,37 @@
     <button onclick="setMenu('referensi')" class="mob-nav flex flex-col items-center gap-0.5 text-[10px]" data-menu="referensi">
       <span class="text-base">🔐</span><span>Referensi</span>
     </button>
-    <button id="nav-admin-mobile" onclick="setMenu('admin')" class="hidden mob-nav flex flex-col items-center gap-0.5 text-[10px]" data-menu="admin">
-      <span class="text-base">⚙️</span><span>Admin</span>
-    </button>
     <button onclick="openAuthModal()" class="flex flex-col items-center gap-0.5 text-[10px]">
-      <span class="text-base">👤</span><span id="mob-account-label">Masuk</span>
+      <span class="text-base">👤</span><span id="mob-account-label">Login Siswa</span>
     </button>
   </nav>
 
-  <!-- MODAL LOGIN -->
+  <!-- MODAL LOGIN SISWA UNTUK REFERENSI -->
   <div id="login-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-xl relative">
       <button onclick="closeModal('login-modal')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 text-stone-500 flex items-center justify-center text-sm">✕</button>
       <div class="w-11 h-11 rounded-2xl deep-teal text-white flex items-center justify-center font-bold mb-4">🔐</div>
-      <h2 class="text-lg font-bold text-stone-900">Masuk Akun SMANDA</h2>
-      <p class="text-xs text-stone-500 mt-1 mb-4">Login untuk mengakses <b>Buku Referensi (TKA, SMBT, Data Soal)</b> atau masuk ke dashboard pengelola.</p>
+      <h2 class="text-lg font-bold text-stone-900">Login Siswa SMANDA</h2>
+      <p class="text-xs text-stone-500 mt-1 mb-4">Masuk menggunakan akun siswa untuk membuka koleksi <b>Buku Referensi (TKA, SMBT, Data Soal)</b>.</p>
       <form onsubmit="handleLogin(event)" class="space-y-3">
         <div>
-          <label class="text-xs font-semibold text-stone-700">Username / NIS / NIP</label>
-          <input id="login-username" required type="text" placeholder="Contoh: siswa atau admin" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-sm outline-none focus:border-[#2B5459]" />
+          <label class="text-xs font-semibold text-stone-700">Username / NIS</label>
+          <input id="login-username" required type="text" placeholder="Contoh: siswa" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-sm outline-none focus:border-[#2B5459]" />
         </div>
         <div>
           <label class="text-xs font-semibold text-stone-700">Password</label>
           <input id="login-password" required type="password" placeholder="••••••••" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-sm outline-none focus:border-[#2B5459]" />
         </div>
         <div id="login-error" class="hidden text-xs text-red-600 bg-red-50 p-2.5 rounded-xl"></div>
-        <button type="submit" class="w-full py-2.5 rounded-xl deep-teal text-white font-semibold text-sm hover:opacity-95 transition">Masuk Sekarang</button>
+        <button type="submit" class="w-full py-2.5 rounded-xl deep-teal text-white font-semibold text-sm hover:opacity-95 transition">Buka Akses Referensi</button>
       </form>
+      <div class="mt-4 pt-3 border-t border-stone-100 text-center">
+        <a href="/admin.html" class="text-[11px] text-stone-400 hover:text-stone-700">Pengelola Perpustakaan? Masuk di Halaman Admin →</a>
+      </div>
     </div>
   </div>
 
-  <!-- MODAL PDF READER NYAMAN -->
+  <!-- MODAL PDF READER -->
   <div id="reader-modal" class="hidden fixed inset-0 bg-[#FAF8F5] z-50 flex flex-col">
     <div class="bg-white border-b border-stone-200 px-4 py-3 flex items-center justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
@@ -149,11 +138,10 @@
     let state = {
       categories: [],
       books: [],
-      user: JSON.parse(localStorage.getItem('smanda_user') || 'null'),
+      user: JSON.parse(localStorage.getItem('smanda_student') || 'null'),
       menu: 'discover',
       selectedCategory: 'all',
-      search: '',
-      adminTab: 'umum'
+      search: ''
     };
 
     const COVER_COLORS = [
@@ -165,6 +153,7 @@
     ];
 
     async function loadData() {
+      updateAuthUI();
       try {
         const res = await fetch('/api/init');
         const data = await res.json();
@@ -174,10 +163,10 @@
           populateCategoryDropdown();
           renderAll();
         } else {
-          document.getElementById('main-view').innerHTML = `<div class="bg-red-50 text-red-700 p-4 rounded-2xl text-xs">Gagal memuat database: ${data.error}</div>`;
+          document.getElementById('main-view').innerHTML = `<div class="bg-red-50 text-red-700 p-4 rounded-2xl text-xs">Gagal memuat koleksi: ${data.error}</div>`;
         }
       } catch (e) {
-        document.getElementById('main-view').innerHTML = `<div class="bg-amber-50 text-amber-800 p-4 rounded-2xl text-xs">Menghubungkan ke server... Pastikan Environment Variables Turso sudah diisi di Cloudflare Pages.</div>`;
+        document.getElementById('main-view').innerHTML = `<div class="bg-red-50 text-red-700 p-4 rounded-2xl text-xs">Gagal menghubungi server: ${e.message}</div>`;
       }
     }
 
@@ -190,11 +179,7 @@
     }
 
     function updateAuthUI() {
-      const isAdmin = state.user && (state.user.role === 'super_admin' || state.user.role === 'kontributor');
-      document.getElementById('nav-admin-desktop').classList.toggle('hidden', !isAdmin);
-      document.getElementById('nav-admin-mobile').classList.toggle('hidden', !isAdmin);
-      document.getElementById('mob-account-label').textContent = state.user ? 'Keluar' : 'Masuk';
-
+      document.getElementById('mob-account-label').textContent = state.user ? 'Keluar' : 'Login';
       const sidebarBox = document.getElementById('sidebar-auth-box');
       const desktopPill = document.getElementById('desktop-user-pill');
       const mobStrip = document.getElementById('mobile-auth-strip');
@@ -203,8 +188,8 @@
         sidebarBox.innerHTML = `
           <div class="p-3 rounded-2xl bg-stone-50 border border-stone-200/70">
             <div class="text-xs font-bold text-stone-800 truncate">${state.user.nama}</div>
-            <div class="text-[10px] uppercase tracking-wider text-teal-700 font-semibold mt-0.5">${state.user.role.replace('_', ' ')}</div>
-            <button onclick="logout()" class="mt-2.5 w-full py-1.5 rounded-lg bg-white border border-stone-200 text-xs font-semibold text-red-600 hover:bg-red-50">Keluar Akun</button>
+            <div class="text-[10px] uppercase tracking-wider text-teal-700 font-semibold mt-0.5">Akses Referensi Aktif</div>
+            <button onclick="logout()" class="mt-2.5 w-full py-1.5 rounded-lg bg-white border border-stone-200 text-xs font-semibold text-red-600 hover:bg-red-50">Keluar</button>
           </div>`;
         desktopPill.innerHTML = `
           <div class="flex items-center gap-2.5 bg-white px-3.5 py-1.5 rounded-full border border-stone-200/70 text-xs">
@@ -214,9 +199,9 @@
         mobStrip.innerHTML = `<span>Halo, <b>${state.user.nama}</b></span><button onclick="logout()" class="text-red-700 font-semibold">Keluar</button>`;
       } else {
         sidebarBox.innerHTML = `
-          <button onclick="openAuthModal()" class="w-full py-2.5 rounded-xl deep-teal text-white text-xs font-semibold shadow-xs">Masuk Akun Siswa / Admin</button>`;
+          <button onclick="openAuthModal()" class="w-full py-2.5 rounded-xl deep-teal text-white text-xs font-semibold">Login Siswa (Referensi)</button>`;
         desktopPill.innerHTML = `
-          <button onclick="openAuthModal()" class="bg-white hover:bg-stone-50 px-4 py-2 rounded-full border border-stone-200 text-xs font-semibold text-stone-800">Masuk / Login 🔒</button>`;
+          <button onclick="openAuthModal()" class="bg-white hover:bg-stone-50 px-4 py-2 rounded-full border border-stone-200 text-xs font-semibold text-stone-800">Login Siswa 🔒</button>`;
         mobStrip.innerHTML = `<span>Mode Publik (Buku Umum)</span><button onclick="openAuthModal()" class="font-bold text-[#2B5459] underline">Login Referensi 🔒</button>`;
       }
 
@@ -244,8 +229,7 @@
       const headings = {
         discover: 'Jelajah Koleksi',
         umum: 'Buku Umum & Mata Pelajaran',
-        referensi: 'Referensi Khusus (TKA, SMBT, Soal)',
-        admin: 'Dashboard Pengelola Perpustakaan'
+        referensi: 'Referensi Khusus (TKA, SMBT, Soal)'
       };
       document.getElementById('page-heading').textContent = headings[menu] || 'Perpustakaan';
       renderAll();
@@ -300,11 +284,6 @@
       updateAuthUI();
       const view = document.getElementById('main-view');
 
-      if (state.menu === 'admin') {
-        renderAdminView(view);
-        return;
-      }
-
       let filtered = state.books.filter(b => {
         if (state.menu === 'umum' && b.access_type !== 'umum') return false;
         if (state.menu === 'referensi' && b.access_type !== 'referensi') return false;
@@ -325,7 +304,7 @@
             ${state.selectedCategory !== 'all' ? '<button onclick="filterByCat(\'all\', \'umum\');setMenu(\'discover\')" class="text-xs font-semibold text-[#2B5459] underline">Reset Filter</button>' : `<span class="text-xs text-stone-400">${filtered.length} dokumen</span>`}
           </div>
           ${filtered.length === 0
-            ? '<div class="bg-white rounded-2xl p-8 text-center border border-stone-200/60 text-sm text-stone-500">Belum ada dokumen pada kategori ini. Admin dapat menambahkannya melalui Menu Pengelola.</div>'
+            ? '<div class="bg-white rounded-2xl p-8 text-center border border-stone-200/60 text-sm text-stone-500">Belum ada dokumen pada kategori ini.</div>'
             : `<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">${filtered.map((b, i) => renderBookCard(b, i)).join('')}</div>`
           }
         </section>`;
@@ -390,238 +369,6 @@
       document.getElementById('reader-modal').classList.remove('hidden');
     }
 
-    function renderAdminView(view) {
-      const isSuperAdmin = state.user && state.user.role === 'super_admin';
-      const filteredCats = state.categories.filter(c => c.access_type === state.adminTab);
-
-      view.innerHTML = `
-        <div class="space-y-6">
-          <div class="flex flex-wrap gap-2">
-            <button onclick="state.adminTab='umum';renderAll()" class="px-4 py-2 rounded-xl text-xs font-bold transition ${state.adminTab === 'umum' ? 'deep-teal text-white' : 'bg-white text-stone-600 border border-stone-200'}">
-              📚 1. Tambah Buku Umum (Publik)
-            </button>
-            <button onclick="state.adminTab='referensi';renderAll()" class="px-4 py-2 rounded-xl text-xs font-bold transition ${state.adminTab === 'referensi' ? 'bg-amber-600 text-white' : 'bg-white text-stone-600 border border-stone-200'}">
-              🔐 2. Tambah Buku Referensi (Khusus Login)
-            </button>
-          </div>
-
-          <div class="grid md:grid-cols-3 gap-6">
-            <div class="md:col-span-2 bg-white rounded-3xl p-5 md:p-6 border border-stone-200/80 space-y-4">
-              <div class="flex items-center justify-between">
-                <h2 class="text-base font-bold text-stone-900">
-                  ${state.adminTab === 'umum' ? 'Input Buku Umum / Mata Pelajaran / Novel' : 'Input Buku Referensi (TKA, SMBT, Data Soal)'}
-                </h2>
-                <span class="text-[11px] px-2.5 py-1 rounded-full font-semibold ${state.adminTab === 'umum' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800'}">
-                  ${state.adminTab === 'umum' ? 'Akses Publik' : 'Wajib Login'}
-                </span>
-              </div>
-
-              <div>
-                <label class="text-xs font-semibold text-stone-700">Tempel Link PDF (Google Drive atau Link .pdf langsung)</label>
-                <div class="mt-1 flex gap-2">
-                  <input id="adm-pdf-url" type="url" placeholder="https://drive.google.com/file/d/..." class="flex-1 px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs outline-none focus:border-[#2B5459]" />
-                  <button type="button" onclick="autoExtractPdf()" class="px-3.5 py-2.5 rounded-xl bg-stone-900 text-white text-xs font-semibold shrink-0">Ambil Otomatis</button>
-                </div>
-                <p id="extract-status" class="text-[11px] text-stone-400 mt-1">Klik "Ambil Otomatis" untuk menarik judul & thumbnail sampul.</p>
-              </div>
-
-              <div class="grid sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="text-xs font-semibold text-stone-700">Judul Dokumen</label>
-                  <input id="adm-title" type="text" placeholder="Otomatis terisi atau ketik manual" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs outline-none" />
-                </div>
-                <div>
-                  <label class="text-xs font-semibold text-stone-700">Kategori (${state.adminTab === 'umum' ? 'Mapel / Novel' : 'Referensi'})</label>
-                  <select id="adm-category" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs outline-none bg-white">
-                    ${filteredCats.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
-                  </select>
-                </div>
-              </div>
-
-              <div class="grid sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="text-xs font-semibold text-stone-700">Penulis / Penyusun</label>
-                  <input id="adm-author" type="text" value="Tim Guru SMAN 2 Karanganyar" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs outline-none" />
-                </div>
-                <div>
-                  <label class="text-xs font-semibold text-stone-700">URL Thumbnail (Otomatis)</label>
-                  <input id="adm-thumb" oninput="updateThumbPreview()" type="text" placeholder="Terisi otomatis dari PDF/Drive" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs outline-none" />
-                </div>
-              </div>
-
-              <button onclick="saveNewBook()" class="w-full py-3 rounded-xl deep-teal text-white font-bold text-xs md:text-sm hover:opacity-95 transition">
-                Simpan & Publikasikan ke Perpustakaan
-              </button>
-            </div>
-
-            <div class="space-y-4">
-              <div class="bg-white rounded-3xl p-5 border border-stone-200/80 flex flex-col items-center text-center">
-                <div class="text-xs font-bold text-stone-700 mb-3">Pratinjau Sampul Otomatis</div>
-                <div id="thumb-preview-box" class="w-32 aspect-[3/4] rounded-xl bg-stone-100 border border-dashed border-stone-300 flex items-center justify-center text-[11px] text-stone-400 overflow-hidden">
-                  Belum ada sampul
-                </div>
-              </div>
-
-              <div class="bg-white rounded-3xl p-5 border border-stone-200/80 space-y-2.5">
-                <div class="text-xs font-bold text-stone-800">+ Tambah Sub-Kategori (${state.adminTab === 'umum' ? 'Umum' : 'Referensi'})</div>
-                <div class="flex gap-2">
-                  <input id="new-cat-name" type="text" placeholder="Misal: Sejarah / Try Out" class="flex-1 px-3 py-2 rounded-xl border border-stone-200 text-xs outline-none" />
-                  <button onclick="addNewCategory()" class="px-3 py-2 rounded-xl bg-stone-800 text-white text-xs font-semibold">Tambah</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white rounded-3xl p-5 md:p-6 border border-stone-200/80">
-            <h3 class="text-sm font-bold text-stone-900 mb-4">Kelola Daftar Buku Tersimpan (${state.books.length})</h3>
-            <div class="divide-y divide-stone-100">
-              ${state.books.map(b => `
-                <div class="py-3 flex items-center justify-between gap-3">
-                  <div class="min-w-0">
-                    <div class="text-xs font-bold text-stone-800 truncate">${b.title}</div>
-                    <div class="text-[11px] text-stone-400">${b.category_name || '-'} • <span class="uppercase font-semibold">${b.access_type}</span></div>
-                  </div>
-                  <button onclick="deleteBook('${b.id}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-xs font-semibold hover:bg-red-100 shrink-0">Hapus</button>
-                </div>`).join('')}
-            </div>
-          </div>
-
-          ${isSuperAdmin ? `
-          <div class="bg-white rounded-3xl p-5 md:p-6 border border-stone-200/80 space-y-4">
-            <h3 class="text-sm font-bold text-stone-900">Kelola Akun Pengelola (Turunan Admin) & Siswa</h3>
-            <div class="grid sm:grid-cols-4 gap-2.5">
-              <input id="usr-nama" type="text" placeholder="Nama Lengkap" class="px-3 py-2 rounded-xl border border-stone-200 text-xs" />
-              <input id="usr-username" type="text" placeholder="Username / NIS" class="px-3 py-2 rounded-xl border border-stone-200 text-xs" />
-              <input id="usr-pass" type="text" placeholder="Password" class="px-3 py-2 rounded-xl border border-stone-200 text-xs" />
-              <div class="flex gap-2">
-                <select id="usr-role" class="flex-1 px-2.5 py-2 rounded-xl border border-stone-200 text-xs bg-white">
-                  <option value="kontributor">Turunan Admin (Guru/Petugas)</option>
-                  <option value="siswa">Siswa (Akses Referensi)</option>
-                  <option value="super_admin">Super Admin</option>
-                </select>
-                <button onclick="createUser()" class="px-3.5 py-2 rounded-xl deep-teal text-white text-xs font-semibold">Buat</button>
-              </div>
-            </div>
-            <div id="users-list-box" class="text-xs text-stone-500">Memuat daftar akun...</div>
-          </div>` : ''}
-        </div>`;
-
-      if (isSuperAdmin) loadUsersList();
-    }
-
-    async function autoExtractPdf() {
-      const url = document.getElementById('adm-pdf-url').value.trim();
-      if (!url) return alert('Tempel link PDF terlebih dahulu.');
-      const status = document.getElementById('extract-status');
-      status.textContent = 'Sedang mengambil judul & sampul otomatis...';
-      const res = await fetch('/api/extract', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pdf_url: url })
-      });
-      const data = await res.json();
-      if (data.ok) {
-        document.getElementById('adm-title').value = data.title;
-        document.getElementById('adm-thumb').value = data.thumbnailUrl || '';
-        updateThumbPreview();
-        status.textContent = 'Berhasil diekstrak! Silakan periksa judul lalu klik Simpan.';
-      }
-    }
-
-    function updateThumbPreview() {
-      const thumb = document.getElementById('adm-thumb').value.trim();
-      const box = document.getElementById('thumb-preview-box');
-      if (thumb) {
-        box.innerHTML = `<img src="${thumb}" class="w-full h-full object-cover" />`;
-      } else {
-        box.innerHTML = 'Otomatis cover tipografi';
-      }
-    }
-
-    async function saveNewBook() {
-      const pdf_url = document.getElementById('adm-pdf-url').value.trim();
-      const title = document.getElementById('adm-title').value.trim();
-      const category_id = document.getElementById('adm-category').value;
-      const author = document.getElementById('adm-author').value.trim();
-      const thumbnail_url = document.getElementById('adm-thumb').value.trim();
-
-      if (!pdf_url || !title) return alert('Link PDF dan Judul wajib diisi.');
-      const res = await fetch('/api/books', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title, author, pdf_url, thumbnail_url, category_id,
-          access_type: state.adminTab,
-          uploaded_by: state.user?.username || 'admin'
-        })
-      });
-      if ((await res.json()).ok) {
-        alert('Dokumen berhasil ditambahkan!');
-        await loadData();
-      }
-    }
-
-    async function deleteBook(id) {
-      if (!confirm('Hapus dokumen ini dari perpustakaan?')) return;
-      await fetch('/api/books/delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id })
-      });
-      await loadData();
-    }
-
-    async function addNewCategory() {
-      const name = document.getElementById('new-cat-name').value.trim();
-      if (!name) return;
-      await fetch('/api/categories', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, access_type: state.adminTab })
-      });
-      await loadData();
-    }
-
-    async function loadUsersList() {
-      const res = await fetch('/api/users');
-      const data = await res.json();
-      const box = document.getElementById('users-list-box');
-      if (!box || !data.ok) return;
-      box.innerHTML = '<div class="divide-y divide-stone-100">' + data.users.map(u => `
-        <div class="py-2.5 flex items-center justify-between">
-          <div>
-            <span class="font-bold text-stone-800">${u.nama}</span> (<span class="text-stone-500">${u.username}</span>)
-            <span class="ml-2 px-2 py-0.5 rounded bg-stone-100 text-[10px] font-semibold uppercase">${u.role}</span>
-          </div>
-          <button onclick="toggleUser('${u.id}', ${String(u.is_active) === '1' ? 0 : 1})" class="text-xs font-semibold ${String(u.is_active) === '1' ? 'text-emerald-700' : 'text-red-600'}">
-            ${String(u.is_active) === '1' ? 'Aktif' : 'Nonaktif'}
-          </button>
-        </div>`).join('') + '</div>';
-    }
-
-    async function createUser() {
-      const nama = document.getElementById('usr-nama').value.trim();
-      const username = document.getElementById('usr-username').value.trim();
-      const password = document.getElementById('usr-pass').value.trim();
-      const role = document.getElementById('usr-role').value;
-      if (!nama || !username || !password) return alert('Lengkapi data akun.');
-      await fetch('/api/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nama, username, password, role })
-      });
-      loadUsersList();
-    }
-
-    async function toggleUser(id, is_active) {
-      await fetch('/api/users/toggle', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, is_active })
-      });
-      loadUsersList();
-    }
-
     function openAuthModal() {
       if (state.user) {
         if (confirm('Keluar dari akun ' + state.user.nama + '?')) logout();
@@ -654,18 +401,14 @@
         return;
       }
       state.user = data.user;
-      localStorage.setItem('smanda_user', JSON.stringify(data.user));
+      localStorage.setItem('smanda_student', JSON.stringify(data.user));
       closeModal('login-modal');
-      if (data.user.role === 'super_admin' || data.user.role === 'kontributor') {
-        setMenu('admin');
-      } else {
-        renderAll();
-      }
+      renderAll();
     }
 
     function logout() {
       state.user = null;
-      localStorage.removeItem('smanda_user');
+      localStorage.removeItem('smanda_student');
       state.menu = 'discover';
       renderAll();
     }
