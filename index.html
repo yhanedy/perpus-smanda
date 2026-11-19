@@ -1,419 +1,185 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Perpustakaan Digital — SMAN 2 Karanganyar</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal SSO — SMAN 2 Karanganyar</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F6F4F0; color: #1E293B; }
-    .warm-sand { background-color: #EAE5DC; }
-    .deep-teal { background-color: #2B5459; }
-    .book-shadow { box-shadow: 0 10px 22px -6px rgba(30, 41, 59, 0.22), 0 2px 6px -1px rgba(30, 41, 59, 0.08); }
+    body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+    /* Animasi loading tombol */
+    .loader { border: 2px solid #f3f3f3; border-top: 2px solid #ffffff; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row pb-20 md:pb-0">
+<body class="min-h-screen flex items-center justify-center p-4">
 
-  <header class="md:hidden deep-teal text-white px-4 py-3.5 text-center tracking-widest font-bold text-xs uppercase shadow-sm sticky top-0 z-30">
-    PERPUSTAKAAN SMAN 2 KARANGANYAR
-  </header>
+  <!-- Kotak Login -->
+  <div class="bg-white rounded-3xl max-w-md w-full p-8 md:p-10 shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden">
+    
+    <!-- Ornamen Latar Belakang (Opsional) -->
+    <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 rounded-full bg-slate-50 opacity-50 z-0"></div>
+    <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-32 h-32 rounded-full bg-slate-50 opacity-50 z-0"></div>
 
-  <aside class="hidden md:flex md:w-64 bg-white border-r border-stone-200/80 flex-col justify-between p-6 sticky top-0 h-screen shrink-0">
-    <div>
-      <div class="flex items-center gap-3 mb-9">
-        <div class="w-9 h-9 rounded-xl deep-teal text-white flex items-center justify-center font-bold text-sm">S2</div>
-        <div>
-          <div class="font-bold text-sm tracking-tight text-stone-900">PERPUS SMANDA</div>
-          <div class="text-[11px] text-stone-400">SMAN 2 Karanganyar</div>
+    <div class="relative z-10 text-center mb-8">
+      <div class="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-bold text-2xl mx-auto mb-4 shadow-lg shadow-slate-900/20">
+        <i class="fa-solid fa-school"></i>
+      </div>
+      <h1 class="font-bold text-2xl text-slate-900 tracking-tight">SMAN 2 Karanganyar</h1>
+      <p class="text-sm text-slate-500 mt-1">Centralized School Ecosystem & SSO Portal</p>
+    </div>
+
+    <form id="login-form" onsubmit="handleLogin(event)" class="relative z-10 space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 mb-1">Username / NISN / NIP</label>
+        <input id="login-username" required type="text" placeholder="Masukkan kredensial Anda" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition" />
+      </div>
+      
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+        <div class="relative">
+          <input id="login-password" required type="password" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition" />
+          <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none">
+            <i id="eye-icon" class="fa-solid fa-eye"></i>
+          </button>
         </div>
       </div>
 
-      <div class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-3 px-2">Menu Perpustakaan</div>
-      <nav class="space-y-1.5" id="desktop-nav">
-        <button onclick="setMenu('discover')" data-menu="discover" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition">
-          <span class="nav-icon w-7 h-7 rounded-lg flex items-center justify-center">🏠</span>
-          <span>Jelajah</span>
-        </button>
-        <button onclick="setMenu('umum')" data-menu="umum" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition">
-          <span class="nav-icon w-7 h-7 rounded-lg flex items-center justify-center">📚</span>
-          <span>Buku Umum & Mapel</span>
-        </button>
-        <button onclick="setMenu('referensi')" data-menu="referensi" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition">
-          <span class="nav-icon w-7 h-7 rounded-lg flex items-center justify-center">🔐</span>
-          <span class="flex items-center gap-1.5">Referensi <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold">Siswa</span></span>
-        </button>
-      </nav>
-    </div>
-
-    <div class="pt-4 border-t border-stone-100 space-y-3">
-      <div id="sidebar-auth-box"></div>
-      <a href="/admin.html" class="block text-center text-[11px] text-stone-400 hover:text-stone-600">Login Pengelola / Admin →</a>
-    </div>
-  </aside>
-
-  <main class="flex-1 flex flex-col min-w-0">
-    <div class="warm-sand px-4 md:px-10 pt-5 pb-8 md:pt-8 md:pb-10 rounded-b-3xl md:rounded-none">
-      <div class="hidden md:flex items-center justify-between mb-6">
-        <h1 id="page-heading" class="text-2xl font-bold text-stone-900">Jelajah Koleksi</h1>
-        <div id="desktop-user-pill"></div>
+      <div id="login-error" class="hidden text-xs text-red-600 bg-red-50 p-3 rounded-xl border border-red-100 flex items-start gap-2">
+        <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+        <span id="login-error-text"></span>
       </div>
 
-      <div class="max-w-2xl bg-white p-1.5 rounded-2xl shadow-sm border border-stone-200/70 flex items-center gap-2">
-        <select id="category-select" onchange="onFilterChange()" class="bg-transparent text-xs md:text-sm font-medium text-stone-600 pl-3 pr-2 py-2 outline-none border-r border-stone-200 max-w-[130px] md:max-w-[170px]">
-          <option value="all">Semua Kategori</option>
-        </select>
-        <input id="search-input" oninput="onFilterChange()" type="text" placeholder="Cari judul buku, mapel, TKA, SMBT..." class="flex-1 text-xs md:text-sm px-2 py-2 outline-none bg-transparent text-stone-800" />
-        <button onclick="onFilterChange()" class="bg-[#1E3A3A] hover:bg-[#152929] text-white text-xs md:text-sm font-semibold px-4 md:px-5 py-2 rounded-xl transition">
-          Cari
-        </button>
-      </div>
+      <button type="submit" id="login-btn" class="w-full py-3 rounded-xl bg-slate-900 text-white font-semibold text-sm hover:bg-slate-800 transition shadow-md shadow-slate-900/20 flex items-center justify-center gap-2">
+        <span>Masuk ke Portal</span>
+      </button>
+    </form>
 
-      <div class="md:hidden mt-3 flex items-center justify-between text-xs text-stone-600" id="mobile-auth-strip"></div>
-    </div>
-
-    <div id="main-view" class="px-4 md:px-10 py-6 flex-1 space-y-8">
-      <div class="text-center py-12 text-stone-400 text-sm">Memuat koleksi perpustakaan...</div>
-    </div>
-  </main>
-
-  <nav class="md:hidden fixed bottom-0 inset-x-0 deep-teal text-white/80 flex items-center justify-around py-2.5 px-2 z-30 shadow-lg">
-    <button onclick="setMenu('discover')" class="mob-nav flex flex-col items-center gap-0.5 text-[10px]" data-menu="discover">
-      <span class="text-base">🏠</span><span>Beranda</span>
-    </button>
-    <button onclick="setMenu('umum')" class="mob-nav flex flex-col items-center gap-0.5 text-[10px]" data-menu="umum">
-      <span class="text-base">📚</span><span>Umum</span>
-    </button>
-    <button onclick="setMenu('referensi')" class="mob-nav flex flex-col items-center gap-0.5 text-[10px]" data-menu="referensi">
-      <span class="text-base">🔐</span><span>Referensi</span>
-    </button>
-    <button onclick="openAuthModal()" class="flex flex-col items-center gap-0.5 text-[10px]">
-      <span class="text-base">👤</span><span id="mob-account-label">Login Siswa</span>
-    </button>
-  </nav>
-
-  <!-- MODAL LOGIN SISWA UNTUK REFERENSI -->
-  <div id="login-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-xl relative">
-      <button onclick="closeModal('login-modal')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 text-stone-500 flex items-center justify-center text-sm">✕</button>
-      <div class="w-11 h-11 rounded-2xl deep-teal text-white flex items-center justify-center font-bold mb-4">🔐</div>
-      <h2 class="text-lg font-bold text-stone-900">Login Siswa SMANDA</h2>
-      <p class="text-xs text-stone-500 mt-1 mb-4">Masuk menggunakan akun siswa untuk membuka koleksi <b>Buku Referensi (TKA, SMBT, Data Soal)</b>.</p>
-      <form onsubmit="handleLogin(event)" class="space-y-3">
-        <div>
-          <label class="text-xs font-semibold text-stone-700">Username / NIS</label>
-          <input id="login-username" required type="text" placeholder="Contoh: siswa" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-sm outline-none focus:border-[#2B5459]" />
-        </div>
-        <div>
-          <label class="text-xs font-semibold text-stone-700">Password</label>
-          <input id="login-password" required type="password" placeholder="••••••••" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-sm outline-none focus:border-[#2B5459]" />
-        </div>
-        <div id="login-error" class="hidden text-xs text-red-600 bg-red-50 p-2.5 rounded-xl"></div>
-        <button type="submit" class="w-full py-2.5 rounded-xl deep-teal text-white font-semibold text-sm hover:opacity-95 transition">Buka Akses Referensi</button>
-      </form>
-      <div class="mt-4 pt-3 border-t border-stone-100 text-center">
-        <a href="/admin.html" class="text-[11px] text-stone-400 hover:text-stone-700">Pengelola Perpustakaan? Masuk di Halaman Admin →</a>
-      </div>
+    <div class="mt-8 pt-6 border-t border-slate-100 text-center relative z-10">
+      <a href="laporan-publik.html" class="text-xs font-semibold text-slate-500 hover:text-slate-900 transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-chart-line"></i> Akses Laporan Presensi Publik
+      </a>
+      <p class="text-[11px] text-slate-400 mt-4">Mengalami masalah login? Hubungi Administrator System Sekolah.</p>
     </div>
   </div>
 
-  <!-- MODAL PDF READER -->
-  <div id="reader-modal" class="hidden fixed inset-0 bg-[#FAF8F5] z-50 flex flex-col">
-    <div class="bg-white border-b border-stone-200 px-4 py-3 flex items-center justify-between gap-3">
-      <div class="flex items-center gap-3 min-w-0">
-        <button onclick="closeModal('reader-modal')" class="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-xs font-semibold text-stone-700 shrink-0">← Tutup</button>
-        <div class="min-w-0">
-          <h3 id="reader-title" class="text-sm font-bold text-stone-900 truncate">Judul Dokumen</h3>
-          <p id="reader-meta" class="text-[11px] text-stone-500 truncate">Kategori</p>
-        </div>
-      </div>
-      <a id="reader-ext-link" href="#" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl deep-teal text-white text-xs font-semibold shrink-0">Buka Asli ↗</a>
-    </div>
-    <div class="flex-1 bg-stone-100 relative">
-      <iframe id="reader-frame" src="" class="w-full h-full border-0"></iframe>
-    </div>
-  </div>
+  <!-- Font Awesome (Untuk Ikon) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script>
-    let state = {
-      categories: [],
-      books: [],
-      user: JSON.parse(localStorage.getItem('smanda_student') || 'null'),
-      menu: 'discover',
-      selectedCategory: 'all',
-      search: ''
-    };
-
-    const COVER_COLORS = [
-      'from-emerald-700 to-teal-900',
-      'from-amber-600 to-orange-800',
-      'from-slate-700 to-slate-900',
-      'from-indigo-700 to-blue-950',
-      'from-rose-700 to-red-950'
-    ];
-
-    async function loadData() {
-      updateAuthUI();
-      try {
-        const res = await fetch('/api/init');
-        const data = await res.json();
-        if (data.ok) {
-          state.categories = data.categories;
-          state.books = data.books;
-          populateCategoryDropdown();
-          renderAll();
-        } else {
-          document.getElementById('main-view').innerHTML = `<div class="bg-red-50 text-red-700 p-4 rounded-2xl text-xs">Gagal memuat koleksi: ${data.error}</div>`;
-        }
-      } catch (e) {
-        document.getElementById('main-view').innerHTML = `<div class="bg-red-50 text-red-700 p-4 rounded-2xl text-xs">Gagal menghubungi server: ${e.message}</div>`;
-      }
-    }
-
-    function populateCategoryDropdown() {
-      const sel = document.getElementById('category-select');
-      const current = sel.value;
-      sel.innerHTML = '<option value="all">Semua Kategori</option>' +
-        state.categories.map(c => `<option value="${c.id}">${c.name} ${c.access_type === 'referensi' ? '🔒' : ''}</option>`).join('');
-      sel.value = current || 'all';
-    }
-
-    function updateAuthUI() {
-      document.getElementById('mob-account-label').textContent = state.user ? 'Keluar' : 'Login';
-      const sidebarBox = document.getElementById('sidebar-auth-box');
-      const desktopPill = document.getElementById('desktop-user-pill');
-      const mobStrip = document.getElementById('mobile-auth-strip');
-
-      if (state.user) {
-        sidebarBox.innerHTML = `
-          <div class="p-3 rounded-2xl bg-stone-50 border border-stone-200/70">
-            <div class="text-xs font-bold text-stone-800 truncate">${state.user.nama}</div>
-            <div class="text-[10px] uppercase tracking-wider text-teal-700 font-semibold mt-0.5">Akses Referensi Aktif</div>
-            <button onclick="logout()" class="mt-2.5 w-full py-1.5 rounded-lg bg-white border border-stone-200 text-xs font-semibold text-red-600 hover:bg-red-50">Keluar</button>
-          </div>`;
-        desktopPill.innerHTML = `
-          <div class="flex items-center gap-2.5 bg-white px-3.5 py-1.5 rounded-full border border-stone-200/70 text-xs">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span class="font-semibold text-stone-800">${state.user.nama}</span>
-          </div>`;
-        mobStrip.innerHTML = `<span>Halo, <b>${state.user.nama}</b></span><button onclick="logout()" class="text-red-700 font-semibold">Keluar</button>`;
-      } else {
-        sidebarBox.innerHTML = `
-          <button onclick="openAuthModal()" class="w-full py-2.5 rounded-xl deep-teal text-white text-xs font-semibold">Login Siswa (Referensi)</button>`;
-        desktopPill.innerHTML = `
-          <button onclick="openAuthModal()" class="bg-white hover:bg-stone-50 px-4 py-2 rounded-full border border-stone-200 text-xs font-semibold text-stone-800">Login Siswa 🔒</button>`;
-        mobStrip.innerHTML = `<span>Mode Publik (Buku Umum)</span><button onclick="openAuthModal()" class="font-bold text-[#2B5459] underline">Login Referensi 🔒</button>`;
-      }
-
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        const active = btn.dataset.menu === state.menu;
-        btn.classList.toggle('bg-orange-50', active);
-        btn.classList.toggle('text-stone-900', active);
-        btn.classList.toggle('font-bold', active);
-        btn.classList.toggle('text-stone-500', !active);
-        const icon = btn.querySelector('.nav-icon');
-        if (icon) {
-          icon.classList.toggle('bg-[#F26430]', active);
-          icon.classList.toggle('text-white', active);
-          icon.classList.toggle('bg-stone-100', !active);
-        }
-      });
-    }
-
-    function setMenu(menu) {
-      if (menu === 'referensi' && !state.user) {
-        openAuthModal();
-        return;
-      }
-      state.menu = menu;
-      const headings = {
-        discover: 'Jelajah Koleksi',
-        umum: 'Buku Umum & Mata Pelajaran',
-        referensi: 'Referensi Khusus (TKA, SMBT, Soal)'
-      };
-      document.getElementById('page-heading').textContent = headings[menu] || 'Perpustakaan';
-      renderAll();
-    }
-
-    function onFilterChange() {
-      state.selectedCategory = document.getElementById('category-select').value;
-      state.search = document.getElementById('search-input').value.toLowerCase();
-      renderAll();
-    }
-
-    function filterByCat(catId, accessType) {
-      if (accessType === 'referensi' && !state.user) {
-        openAuthModal();
-        return;
-      }
-      state.selectedCategory = catId;
-      document.getElementById('category-select').value = catId;
-      state.menu = accessType === 'referensi' ? 'referensi' : 'umum';
-      renderAll();
-    }
-
-    function renderBookCard(book, idx) {
-      const locked = book.access_type === 'referensi' && !state.user;
-      const color = COVER_COLORS[idx % COVER_COLORS.length];
-      const coverHtml = book.thumbnail_url
-        ? `<img src="${book.thumbnail_url}" alt="${book.title}" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-           <div style="display:none" class="w-full h-full bg-gradient-to-br ${color} p-3 flex-col justify-between text-white">
-             <span class="text-[9px] uppercase tracking-wider opacity-80">${book.category_name || 'PDF'}</span>
-             <span class="text-xs font-bold leading-snug line-clamp-4">${book.title}</span>
-           </div>`
-        : `<div class="w-full h-full bg-gradient-to-br ${color} p-3 flex flex-col justify-between text-white">
-             <span class="text-[9px] uppercase tracking-wider opacity-80">${book.category_name || 'PDF'}</span>
-             <span class="text-xs font-bold leading-snug line-clamp-4">${book.title}</span>
-           </div>`;
-
-      return `
-        <div onclick="openBook('${book.id}')" class="group cursor-pointer flex flex-col">
-          <div class="relative aspect-[3/4] rounded-xl overflow-hidden bg-stone-200 book-shadow group-hover:-translate-y-1 transition duration-200">
-            ${coverHtml}
-            ${locked ? '<div class="absolute inset-0 bg-stone-900/60 backdrop-blur-[1px] flex flex-col items-center justify-center text-white p-2 text-center"><span class="text-lg">🔒</span><span class="text-[10px] font-semibold mt-1">Login Siswa</span></div>' : ''}
-            <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-bold uppercase ${book.access_type === 'referensi' ? 'bg-amber-400 text-stone-950' : 'bg-white/90 text-stone-800'}">
-              ${book.category_name || book.access_type}
-            </span>
-          </div>
-          <h3 class="mt-2.5 text-xs md:text-sm font-bold text-stone-800 line-clamp-2 leading-snug group-hover:text-[#2B5459]">${book.title}</h3>
-          <p class="text-[11px] text-stone-400 mt-0.5 truncate">${book.author || 'SMAN 2 Karanganyar'}</p>
-        </div>`;
-    }
-
-    function renderAll() {
-      updateAuthUI();
-      const view = document.getElementById('main-view');
-
-      let filtered = state.books.filter(b => {
-        if (state.menu === 'umum' && b.access_type !== 'umum') return false;
-        if (state.menu === 'referensi' && b.access_type !== 'referensi') return false;
-        if (state.selectedCategory !== 'all' && b.category_id !== state.selectedCategory) return false;
-        if (state.search && !b.title.toLowerCase().includes(state.search) && !(b.category_name || '').toLowerCase().includes(state.search)) return false;
-        return true;
-      });
-
-      const umumCats = state.categories.filter(c => c.access_type === 'umum');
-      const refCats = state.categories.filter(c => c.access_type === 'referensi');
-
-      let html = `
-        <section>
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-base md:text-lg font-bold text-stone-900">
-              ${state.selectedCategory !== 'all' ? 'Hasil Filter Kategori' : (state.menu === 'discover' ? 'Rekomendasi & Koleksi Terbaru' : 'Daftar Dokumen')}
-            </h2>
-            ${state.selectedCategory !== 'all' ? '<button onclick="filterByCat(\'all\', \'umum\');setMenu(\'discover\')" class="text-xs font-semibold text-[#2B5459] underline">Reset Filter</button>' : `<span class="text-xs text-stone-400">${filtered.length} dokumen</span>`}
-          </div>
-          ${filtered.length === 0
-            ? '<div class="bg-white rounded-2xl p-8 text-center border border-stone-200/60 text-sm text-stone-500">Belum ada dokumen pada kategori ini.</div>'
-            : `<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">${filtered.map((b, i) => renderBookCard(b, i)).join('')}</div>`
+    // ==========================================
+    // 1. CEK SESI (JIKA SUDAH LOGIN, LANGSUNG LEMPAR)
+    // ==========================================
+    (function checkSession() {
+      const userSession = localStorage.getItem('smada_user');
+      if (userSession) {
+        try {
+          const user = JSON.parse(userSession);
+          // Cek apakah role-nya admin atau siswa
+          const role = String(user.role || '').toLowerCase();
+          
+          if (role.includes('admin') || role.includes('piket') || role.includes('kontributor') || role.includes('super')) {
+            window.location.replace('admin.html');
+            return;
+          } else if (role.includes('siswa') || user.nisn) {
+            window.location.replace('siswa.html');
+            return;
           }
-        </section>`;
-
-      if (state.menu === 'discover') {
-        html += `
-          <section class="pt-2">
-            <h2 class="text-base md:text-lg font-bold text-stone-900 mb-3">Kategori Buku Umum & Mapel (Publik)</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              ${umumCats.map(c => `
-                <button onclick="filterByCat('${c.id}', 'umum')" class="bg-white hover:bg-stone-50 border border-stone-200/70 rounded-2xl p-3.5 text-left transition flex items-center justify-between">
-                  <div>
-                    <div class="text-xs md:text-sm font-bold text-stone-800">${c.name}</div>
-                    <div class="text-[10px] text-emerald-700 font-medium mt-0.5">Akses Terbuka</div>
-                  </div>
-                  <span class="text-base">📖</span>
-                </button>`).join('')}
-            </div>
-          </section>
-
-          <section class="pt-2">
-            <div class="flex items-center gap-2 mb-3">
-              <h2 class="text-base md:text-lg font-bold text-stone-900">Buku Referensi Khusus Siswa</h2>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold">Wajib Login</span>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              ${refCats.map(c => `
-                <button onclick="filterByCat('${c.id}', 'referensi')" class="bg-white hover:bg-amber-50/40 border border-amber-200/80 rounded-2xl p-3.5 text-left transition flex items-center justify-between">
-                  <div>
-                    <div class="text-xs md:text-sm font-bold text-stone-800">${c.name}</div>
-                    <div class="text-[10px] text-amber-700 font-medium mt-0.5">${state.user ? 'Terbuka' : 'Khusus Login'}</div>
-                  </div>
-                  <span class="text-base">${state.user ? '🔓' : '🔒'}</span>
-                </button>`).join('')}
-            </div>
-          </section>`;
+        } catch (e) {
+          // Jika data corrupt, hapus saja
+          localStorage.removeItem('smada_user');
+          localStorage.removeItem('smada_siswa');
+        }
       }
+    })();
 
-      view.innerHTML = html;
-    }
-
-    function openBook(bookId) {
-      const book = state.books.find(b => b.id === bookId);
-      if (!book) return;
-      if (book.access_type === 'referensi' && !state.user) {
-        openAuthModal();
-        return;
-      }
-
-      let embedUrl = book.pdf_url;
-      const gdriveMatch = book.pdf_url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || book.pdf_url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-      if (gdriveMatch && gdriveMatch[1]) {
-        embedUrl = `https://drive.google.com/file/d/${gdriveMatch[1]}/preview`;
-      } else if (!book.pdf_url.includes('docs.google.com/viewer')) {
-        embedUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(book.pdf_url)}`;
-      }
-
-      document.getElementById('reader-title').textContent = book.title;
-      document.getElementById('reader-meta').textContent = `${book.category_name || book.access_type} • ${book.author || 'SMAN 2 Karanganyar'}`;
-      document.getElementById('reader-ext-link').href = book.pdf_url;
-      document.getElementById('reader-frame').src = embedUrl;
-      document.getElementById('reader-modal').classList.remove('hidden');
-    }
-
-    function openAuthModal() {
-      if (state.user) {
-        if (confirm('Keluar dari akun ' + state.user.nama + '?')) logout();
-        return;
-      }
-      document.getElementById('login-error').classList.add('hidden');
-      document.getElementById('login-modal').classList.remove('hidden');
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.add('hidden');
-      if (id === 'reader-modal') document.getElementById('reader-frame').src = '';
-    }
-
+    // ==========================================
+    // 2. LOGIKA LOGIN
+    // ==========================================
     async function handleLogin(e) {
       e.preventDefault();
-      const username = document.getElementById('login-username').value;
-      const password = document.getElementById('login-password').value;
+      
+      const username = document.getElementById('login-username').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+      const btn = document.getElementById('login-btn');
       const errBox = document.getElementById('login-error');
+      const errText = document.getElementById('login-error-text');
 
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      const data = await res.json();
-      if (!data.ok) {
-        errBox.textContent = data.error || 'Gagal masuk';
+      // UI Loading
+      btn.disabled = true;
+      btn.innerHTML = `<span class="loader"></span> <span>Memverifikasi...</span>`;
+      errBox.classList.add('hidden');
+
+      try {
+        // Sesuaikan URL API ini dengan endpoint login Cloudflare Worker Anda
+        // Asumsi: API login mengembalikan { ok: true, user: { nama, role, nisn, token } }
+        const response = await fetch('https://smada-api-gateway.yhanedy.workers.dev/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || 'Username atau password salah.');
+        }
+
+        // ==========================================
+        // 3. SIMPAN SESI & REDIRECT BERDASARKAN ROLE
+        // ==========================================
+        const user = data.user;
+        const role = String(user.role || '').toLowerCase();
+
+        // Simpan sesi universal
+        localStorage.setItem('smada_user', JSON.stringify(user));
+
+        // Jika role siswa, simpan juga ke smada_siswa agar kompatibel dengan siswa.html
+        if (role.includes('siswa') || user.nisn) {
+          localStorage.setItem('smada_siswa', JSON.stringify(user));
+          window.location.replace('siswa.html');
+        } 
+        // Jika role admin/piket/guru
+        else if (role.includes('admin') || role.includes('piket') || role.includes('kontributor') || role.includes('super')) {
+          window.location.replace('admin.html');
+        } 
+        // Fallback jika role tidak dikenali
+        else {
+          alert('Role akun Anda tidak dikenali oleh sistem. Hubungi admin.');
+          localStorage.removeItem('smada_user');
+          btn.disabled = false;
+          btn.innerHTML = `<span>Masuk ke Portal</span>`;
+        }
+
+      } catch (error) {
+        // Tampilkan Error
+        errText.textContent = error.message;
         errBox.classList.remove('hidden');
-        return;
+        
+        // Reset Tombol
+        btn.disabled = false;
+        btn.innerHTML = `<span>Masuk ke Portal</span>`;
       }
-      state.user = data.user;
-      localStorage.setItem('smanda_student', JSON.stringify(data.user));
-      closeModal('login-modal');
-      renderAll();
     }
 
-    function logout() {
-      state.user = null;
-      localStorage.removeItem('smanda_student');
-      state.menu = 'discover';
-      renderAll();
+    // ==========================================
+    // 4. FITUR LIHAT PASSWORD
+    // ==========================================
+    function togglePassword() {
+      const input = document.getElementById('login-password');
+      const icon = document.getElementById('eye-icon');
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
     }
-
-    loadData();
   </script>
 </body>
 </html>
