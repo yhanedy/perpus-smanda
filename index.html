@@ -14,43 +14,39 @@
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     .loader { border: 2px solid #334155; border-top: 2px solid #E2E8F0; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite; display: inline-block; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    
-    /* Efek Kaca untuk Sidebar Mengambang (Desktop) */
-    .glass-sidebar {
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    /* Bottom Nav Animation */
-    .bottom-nav { transition: transform 0.3s ease-in-out; }
-    .bottom-nav.hidden-nav { transform: translateY(100%); }
+    .glass-sidebar { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
   </style>
 </head>
 <body class="min-h-screen flex h-screen overflow-hidden bg-slate-950 relative">
 
-  <!-- ================= SIDEBAR MENGAMBANG (Hanya Tampil di Desktop) ================= -->
+  <!-- ================= SIDEBAR (Hanya Desktop) ================= -->
   <aside class="glass-sidebar fixed left-4 top-4 bottom-4 w-16 hover:w-64 group transition-all duration-300 z-40 rounded-2xl flex-col justify-between overflow-hidden shadow-2xl shadow-black/50 hidden md:flex">
     <div class="flex flex-col h-full">
-      <!-- Logo & Brand -->
-      <div class="h-16 flex items-center px-4 shrink-0 border-b border-slate-700/50">
-        <div class="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 bg-white">
-          <img src="https://lh3.googleusercontent.com/d/1YQYf0kgtLInAzpSJKJ_3Da86dIoVXU6n" class="w-full h-full object-cover" alt="Logo" />
+      <!-- Logo & Admin Link -->
+      <div class="h-16 flex items-center justify-between px-4 shrink-0 border-b border-slate-700/50">
+        <div class="flex items-center">
+          <div class="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 bg-white">
+            <img src="https://lh3.googleusercontent.com/d/1YQYf0kgtLInAzpSJKJ_3Da86dIoVXU6n" class="w-full h-full object-cover" alt="Logo" />
+          </div>
+          <div class="ml-3 hidden group-hover:block whitespace-nowrap overflow-hidden">
+            <h1 class="text-xs font-bold text-white leading-tight">Perpustakaan</h1>
+            <p class="text-[10px] text-slate-400">SMAN 2 Karanganyar</p>
+          </div>
         </div>
-        <div class="ml-3 hidden group-hover:block whitespace-nowrap overflow-hidden">
-          <h1 class="text-xs font-bold text-white leading-tight">Perpustakaan</h1>
-          <p class="text-[10px] text-slate-400">SMAN 2 Karanganyar</p>
-        </div>
+        <!-- Tombol Admin (Muncul saat Hover) -->
+        <a href="admin.html" class="hidden group-hover:flex text-slate-500 hover:text-white transition" title="Panel Admin">
+          <i class="fa-solid fa-user-shield text-xs"></i>
+        </a>
       </div>
 
-      <!-- Menu Kategori (Dinamis via JS) -->
+      <!-- Menu Kategori (Dinamis) -->
       <div id="sidebar-menu-container" class="flex-1 overflow-y-auto py-4 px-2 space-y-1">
         <p class="hidden group-hover:block text-[9px] font-bold text-slate-500 uppercase tracking-wider px-3 mb-2">Kategori</p>
         <!-- Diisi via JS -->
       </div>
     </div>
 
-    <!-- Auth Area di bawah -->
+    <!-- Auth Area -->
     <div class="p-2 border-t border-slate-700/50">
       <div id="sidebar-auth-box" class="w-full"></div>
     </div>
@@ -62,17 +58,17 @@
     <!-- TOPBAR -->
     <header class="h-14 border-b border-slate-800 flex items-center justify-between px-4 md:px-6 shrink-0 bg-slate-900/50 backdrop-blur sticky top-0 z-30">
       <div class="flex items-center gap-3 w-full max-w-md">
-        <!-- Hamburger Menu (Buka menu kategori di HP) -->
         <button onclick="toggleMobileMenu()" class="md:hidden text-slate-400 hover:text-white">
           <i class="fa-solid fa-bars text-lg"></i>
         </button>
-        
         <div class="relative w-full">
           <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
           <input id="search-input" oninput="renderBooks()" type="text" placeholder="Cari materi..." class="w-full pl-9 pr-4 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 outline-none focus:border-indigo-500 transition" />
         </div>
       </div>
       <div class="flex items-center gap-3 pl-3">
+        <!-- Tombol Admin (Mobile) -->
+        <a href="admin.html" class="md:hidden text-slate-400 hover:text-indigo-400 transition px-2"><i class="fa-solid fa-user-shield text-sm"></i></a>
         <div id="topbar-auth-btn"></div>
       </div>
     </header>
@@ -91,18 +87,18 @@
         </select>
       </div>
 
-      <!-- SECTION: KOLEKSI PUBLIK -->
+      <!-- SECTION PUBLIK -->
       <section id="section-publik">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-sm font-bold text-white">Buku Umum & Mapel</h2>
           <span class="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">Publik</span>
         </div>
         <div id="grid-publik" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-3">
-          <!-- Buku Publik di-render via JS -->
+          <!-- Buku Publik -->
         </div>
       </section>
 
-      <!-- SECTION: KOLEKSI REFERENSI -->
+      <!-- SECTION REFERENSI -->
       <section id="section-referensi" class="hidden pt-4 border-t border-slate-800">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-sm font-bold text-white flex items-center gap-2">
@@ -111,21 +107,24 @@
           <span class="text-[10px] font-semibold bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded-full border border-amber-500/20">Siswa</span>
         </div>
         <div id="grid-referensi" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-3">
-          <!-- Buku Referensi di-render via JS -->
+          <!-- Buku Referensi -->
         </div>
       </section>
 
-      <!-- PROMPT LOGIN -->
+      <!-- PROMPT LOGIN & PENGAJUAN -->
       <div id="login-prompt" class="bg-slate-800/50 rounded-xl p-6 text-center border border-slate-700 max-w-md mx-auto mt-6">
-        <h3 class="font-bold text-white text-sm mb-1">Akses Terbatas</h3>
-        <p class="text-xs text-slate-400 mb-4">Login untuk melihat koleksi referensi.</p>
-        <button onclick="bukaModalLogin()" class="px-6 py-2 bg-indigo-600 text-white font-semibold text-xs rounded-lg hover:bg-indigo-500 transition shadow-lg shadow-indigo-600/30">Login Siswa</button>
+        <h3 class="font-bold text-white text-sm mb-1">Akses Referensi Terbatas</h3>
+        <p class="text-xs text-slate-400 mb-4">Silakan login atau ajukan akses untuk melihat koleksi buku referensi (TKA).</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-2">
+          <button onclick="bukaModalLogin()" class="px-4 py-2 bg-indigo-600 text-white font-semibold text-xs rounded-lg hover:bg-indigo-500 transition shadow-lg shadow-indigo-600/30">Login Siswa</button>
+          <button onclick="bukaModalPengajuan()" class="px-4 py-2 bg-slate-700 text-white font-semibold text-xs rounded-lg hover:bg-slate-600 transition">Ajukan Akses</button>
+        </div>
       </div>
 
     </div>
   </main>
 
-  <!-- ================= MOBILE MENU OVERLAY (Kategori) ================= -->
+  <!-- ================= MOBILE MENU ================= -->
   <div id="mobile-menu-overlay" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[90] hidden md:hidden transition-opacity">
     <div id="mobile-menu-panel" class="absolute bottom-0 left-0 right-0 bg-slate-900 rounded-t-3xl p-6 transform translate-y-full transition-transform duration-300 border-t border-slate-700">
       <div class="flex justify-between items-center mb-4">
@@ -161,7 +160,33 @@
     </div>
   </div>
 
-  <!-- ================= BOTTOM NAVIGATION (Khusus HP) ================= -->
+  <!-- ================= MODAL PENGAJUAN AKSES ================= -->
+  <div id="modal-pengajuan" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+    <div class="bg-slate-900 rounded-xl w-full max-w-sm p-6 shadow-2xl relative border border-slate-700">
+      <button onclick="tutupModalPengajuan()" class="absolute top-3 right-3 text-slate-400 hover:text-white text-lg">&times;</button>
+      <div class="text-center mb-5">
+        <div class="w-10 h-10 bg-amber-600 text-white rounded-lg flex items-center justify-center mx-auto mb-2 text-lg shadow-lg shadow-amber-600/30">
+          <i class="fa-solid fa-key"></i>
+        </div>
+        <h2 class="font-bold text-sm text-white">Pengajuan Akses Referensi</h2>
+        <p class="text-[10px] text-slate-400 mt-1">Data akan diteruskan ke Admin Perpustakaan.</p>
+      </div>
+      <form onsubmit="kirimPengajuan(event)" class="space-y-3">
+        <div>
+          <input id="ajuan-nama" required type="text" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-xs text-white outline-none focus:border-amber-500" placeholder="Nama Lengkap" />
+        </div>
+        <div>
+          <input id="ajuan-kelas" required type="text" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-xs text-white outline-none focus:border-amber-500" placeholder="Kelas (Cth: XII IPA 1)" />
+        </div>
+        <div>
+          <input id="ajuan-alasan" required type="text" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-xs text-white outline-none focus:border-amber-500" placeholder="Alasan (Cth: Belajar TKA)" />
+        </div>
+        <button type="submit" id="btn-ajukan" class="w-full py-2 bg-amber-600 text-white font-semibold text-xs rounded-lg hover:bg-amber-500 transition mt-2">Kirim Pengajuan</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= BOTTOM NAVIGATION (Mobile) ================= -->
   <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 z-50 md:hidden flex justify-around items-center h-16 pb-safe">
     <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-indigo-400 transition">
       <i class="fa-solid fa-house text-lg mb-1"></i>
@@ -190,6 +215,7 @@
       categories: []
     };
 
+    // Auto-login check on load
     async function init() {
       renderAuthStatus();
       await fetchData();
@@ -217,24 +243,20 @@
       }
     }
 
-    // Render Menu Sidebar & Mobile Menu secara Dinamis berdasarkan Kategori di Database
     function renderSidebarMenu() {
       const sidebarContainer = document.getElementById('sidebar-menu-container');
       const mobileContainer = document.getElementById('mobile-menu-links');
       
-      // Kelompokkan kategori berdasarkan access_type (umum / referensi)
       const umumCats = state.categories.filter(c => c.access_type === 'umum');
       const refCats = state.categories.filter(c => c.access_type === 'referensi');
 
       let html = `
-        <!-- Tombol Semua Buku -->
         <button onclick="filterBySidebar('all')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition group-hover:bg-slate-800/50">
           <div class="w-8 h-8 rounded-lg bg-slate-700 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-border-all text-xs"></i></div>
           <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Semua Buku</span>
         </button>
       `;
       
-      // Render Kategori Umum
       umumCats.forEach(c => {
         html += `
           <button onclick="filterBySidebar('${c.id}')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition group-hover:bg-slate-800/50">
@@ -244,7 +266,6 @@
         `;
       });
 
-      // Render Tombol Referensi
       if (refCats.length > 0) {
         html += `
           <div class="pt-2 mt-2 border-t border-slate-700/50">
@@ -258,7 +279,6 @@
 
       if (sidebarContainer) sidebarContainer.innerHTML = html;
       
-      // Render untuk Mobile Menu
       if (mobileContainer) {
         let mobileHtml = `<button onclick="filterBySidebar('all'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-lg bg-slate-800 text-sm font-semibold text-white mb-2">Semua Kategori</button>`;
         umumCats.forEach(c => {
@@ -276,11 +296,11 @@
       }
     }
 
-    // Filter Berdasarkan ID Kategori
     function filterBySidebar(catId) {
       if (catId === 'referensi') {
         if (!state.user) {
-          bukaModalLogin();
+          // Jika belum login, tampilkan modal login atau pengajuan
+          document.getElementById('login-prompt').scrollIntoView({ behavior: 'smooth' });
         } else {
           document.getElementById('section-referensi').scrollIntoView({ behavior: 'smooth' });
         }
@@ -299,6 +319,7 @@
       const mobileAuthBtn = document.getElementById('mobile-auth-btn');
       
       if (state.user) {
+        // Tampilan jika sudah login
         topbarBtn.innerHTML = `
           <div class="flex items-center gap-2 bg-slate-800 px-2 py-1 rounded-full border border-slate-700">
             <span class="text-[10px] font-semibold text-slate-200 hidden md:block">${state.user.nama}</span>
@@ -314,6 +335,7 @@
         if(mobileAuthBtn) mobileAuthBtn.setAttribute("onclick", "logout()");
         if(mobileAuthBtn) mobileAuthBtn.classList.replace('hover:text-indigo-400', 'text-indigo-400');
       } else {
+        // Tampilan jika belum login
         topbarBtn.innerHTML = `
           <button onclick="bukaModalLogin()" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold rounded-full transition shadow-md shadow-indigo-600/20">Login</button>
         `;
@@ -368,7 +390,6 @@
       }
     }
 
-    // Perbaikan: Mengubah link /view menjadi /preview agar lebih ramah mobile & tanpa konfirmasi
     function createCard(book) {
       let safeUrl = book.pdf_url || '';
       if (safeUrl.includes('drive.google.com')) {
@@ -463,6 +484,42 @@
           overlay.classList.add('hidden');
         }, 300);
       }
+    }
+
+    // --- Fungsi Pengajuan Akses ---
+    function bukaModalPengajuan() {
+      document.getElementById('modal-pengajuan').classList.remove('hidden');
+      document.getElementById('modal-pengajuan').classList.add('flex');
+    }
+
+    function tutupModalPengajuan() {
+      document.getElementById('modal-pengajuan').classList.add('hidden');
+      document.getElementById('modal-pengajuan').classList.remove('flex');
+    }
+
+    function kirimPengajuan(e) {
+      e.preventDefault();
+      const nama = document.getElementById('ajuan-nama').value;
+      const kelas = document.getElementById('ajuan-kelas').value;
+      const alasan = document.getElementById('ajuan-alasan').value;
+      const btn = document.getElementById('btn-ajukan');
+
+      btn.innerHTML = '<span class="loader"></span>';
+      btn.disabled = true;
+
+      // Simulasi pengiriman data (Karena belum ada endpoint API khusus pengajuan)
+      setTimeout(() => {
+        // Simpan ke localStorage sebagai "Antrean Pengajuan"
+        let antrean = JSON.parse(localStorage.getItem('smanda_pengajuan_akses') || '[]');
+        antrean.push({ nama, kelas, alasan, tanggal: new Date().toISOString() });
+        localStorage.setItem('smanda_pengajuan_akses', JSON.stringify(antrean));
+
+        alert(`Terima kasih, ${nama}. Pengajuan akses referensi Anda telah dikirim ke Admin. Silakan tunggu konfirmasi.`);
+        tutupModalPengajuan();
+        
+        btn.innerHTML = 'Kirim Pengajuan';
+        btn.disabled = false;
+      }, 1000);
     }
 
     init();
