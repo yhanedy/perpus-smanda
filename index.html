@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Tema Dasar Gelap & Compact */
     body { font-family: 'Inter', sans-serif; background-color: #0F172A; color: #E2E8F0; }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: #0F172A; }
@@ -16,25 +15,26 @@
     .loader { border: 2px solid #334155; border-top: 2px solid #E2E8F0; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite; display: inline-block; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     
-    /* Efek Kaca untuk Sidebar Mengambang */
+    /* Efek Kaca untuk Sidebar Mengambang (Desktop) */
     .glass-sidebar {
       background: rgba(15, 23, 42, 0.85);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
+    
+    /* Bottom Nav Animation */
+    .bottom-nav { transition: transform 0.3s ease-in-out; }
+    .bottom-nav.hidden-nav { transform: translateY(100%); }
   </style>
 </head>
-<body class="min-h-screen flex h-screen overflow-hidden bg-slate-950">
+<body class="min-h-screen flex h-screen overflow-hidden bg-slate-950 relative">
 
-  <!-- ================= SIDEBAR MENGAMBANG (FLOATING) ================= -->
-  <!-- Sidebar dibuat fixed, mengambang di kiri, dan tidak memakan ruang konten -->
-  <aside class="glass-sidebar fixed left-4 top-4 bottom-4 w-16 hover:w-64 group transition-all duration-300 z-50 rounded-2xl flex flex-col justify-between overflow-hidden shadow-2xl shadow-black/50">
-    
+  <!-- ================= SIDEBAR MENGAMBANG (Hanya Tampil di Desktop) ================= -->
+  <aside class="glass-sidebar fixed left-4 top-4 bottom-4 w-16 hover:w-64 group transition-all duration-300 z-40 rounded-2xl flex-col justify-between overflow-hidden shadow-2xl shadow-black/50 hidden md:flex">
     <div class="flex flex-col h-full">
       <!-- Logo & Brand -->
       <div class="h-16 flex items-center px-4 shrink-0 border-b border-slate-700/50">
         <div class="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 bg-white">
-          <!-- Logo Google Drive Direct Link -->
           <img src="https://lh3.googleusercontent.com/d/1YQYf0kgtLInAzpSJKJ_3Da86dIoVXU6n" class="w-full h-full object-cover" alt="Logo" />
         </div>
         <div class="ml-3 hidden group-hover:block whitespace-nowrap overflow-hidden">
@@ -43,45 +43,10 @@
         </div>
       </div>
 
-      <!-- 6 Menu Kategori Populer -->
-      <div class="flex-1 overflow-y-auto py-4 px-2 space-y-1">
+      <!-- Menu Kategori (Dinamis via JS) -->
+      <div id="sidebar-menu-container" class="flex-1 overflow-y-auto py-4 px-2 space-y-1">
         <p class="hidden group-hover:block text-[9px] font-bold text-slate-500 uppercase tracking-wider px-3 mb-2">Kategori</p>
-        
-        <!-- Menu 1 -->
-        <button onclick="filterBySidebar('cat-1')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition group-hover:bg-slate-800/50">
-          <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-book text-xs"></i></div>
-          <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Buku Umum</span>
-        </button>
-        
-        <!-- Menu 2 -->
-        <button onclick="filterBySidebar('cat-2')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition group-hover:bg-slate-800/50">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-flask text-xs"></i></div>
-          <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Sains / IPA</span>
-        </button>
-
-        <!-- Menu 3 -->
-        <button onclick="filterBySidebar('cat-3')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition group-hover:bg-slate-800/50">
-          <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-earth-asia text-xs"></i></div>
-          <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Sosial / IPS</span>
-        </button>
-
-        <!-- Menu 4 -->
-        <button onclick="filterBySidebar('cat-4')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition group-hover:bg-slate-800/50">
-          <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-calculator text-xs"></i></div>
-          <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Matematika</span>
-        </button>
-
-        <!-- Menu 5 -->
-        <button onclick="filterBySidebar('cat-5')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition group-hover:bg-slate-800/50">
-          <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-language text-xs"></i></div>
-          <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Bahasa</span>
-        </button>
-
-        <!-- Menu 6 -->
-        <button onclick="filterBySidebar('referensi')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-amber-400 transition group-hover:bg-slate-800/50 mt-2 border border-transparent hover:border-amber-500/30">
-          <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-lock text-xs"></i></div>
-          <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Referensi (TKA)</span>
-        </button>
+        <!-- Diisi via JS -->
       </div>
     </div>
 
@@ -91,24 +56,29 @@
     </div>
   </aside>
 
-  <!-- ================= KONTEN UTAMA (Padding-left untuk memberi ruang sidebar) ================= -->
-  <main class="flex-1 flex flex-col h-full ml-24 mr-4 my-4 bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+  <!-- ================= KONTEN UTAMA ================= -->
+  <main class="flex-1 flex flex-col h-full md:ml-24 mr-0 md:mr-4 my-0 md:my-4 bg-slate-900 md:rounded-2xl border-0 md:border md:border-slate-800 overflow-hidden shadow-xl pb-16 md:pb-0">
     
-    <!-- TOPBAR (Lebih tipis & Compact) -->
-    <header class="h-14 border-b border-slate-800 flex items-center justify-between px-6 shrink-0 bg-slate-900/50 backdrop-blur">
-      <div class="flex items-center gap-4 w-full max-w-md">
+    <!-- TOPBAR -->
+    <header class="h-14 border-b border-slate-800 flex items-center justify-between px-4 md:px-6 shrink-0 bg-slate-900/50 backdrop-blur sticky top-0 z-30">
+      <div class="flex items-center gap-3 w-full max-w-md">
+        <!-- Hamburger Menu (Buka menu kategori di HP) -->
+        <button onclick="toggleMobileMenu()" class="md:hidden text-slate-400 hover:text-white">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+        
         <div class="relative w-full">
           <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
           <input id="search-input" oninput="renderBooks()" type="text" placeholder="Cari materi..." class="w-full pl-9 pr-4 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 outline-none focus:border-indigo-500 transition" />
         </div>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 pl-3">
         <div id="topbar-auth-btn"></div>
       </div>
     </header>
 
-    <!-- AREA SCROLLABLE (Isi Dashboard) -->
-    <div id="scroll-container" class="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth">
+    <!-- AREA SCROLLABLE -->
+    <div id="scroll-container" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 scroll-smooth">
       
       <!-- Header Section -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-2">
@@ -116,19 +86,18 @@
           <h1 class="text-xl font-bold text-white tracking-tight">Koleksi Buku</h1>
           <p class="text-xs text-slate-400 mt-0.5">Pilih buku untuk mulai membaca.</p>
         </div>
-        <select id="filter-kategori" onchange="renderBooks()" class="bg-slate-800 text-white text-xs rounded-lg px-3 py-1.5 outline-none border border-slate-700">
+        <select id="filter-kategori" onchange="renderBooks()" class="bg-slate-800 text-white text-xs rounded-lg px-3 py-1.5 outline-none border border-slate-700 w-full md:w-auto">
           <option value="all">Semua Kategori</option>
         </select>
       </div>
 
-      <!-- SECTION: KOLEKSI PUBLIK (Grid Kecil 9 Buku / baris) -->
+      <!-- SECTION: KOLEKSI PUBLIK -->
       <section id="section-publik">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-sm font-bold text-white">Buku Umum & Mapel</h2>
           <span class="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">Publik</span>
         </div>
-        <!-- Grid diatur menjadi 9 kolom di layar lebar (lg:grid-cols-9) -->
-        <div id="grid-publik" class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 gap-3">
+        <div id="grid-publik" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-3">
           <!-- Buku Publik di-render via JS -->
         </div>
       </section>
@@ -141,12 +110,12 @@
           </h2>
           <span class="text-[10px] font-semibold bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded-full border border-amber-500/20">Siswa</span>
         </div>
-        <div id="grid-referensi" class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 gap-3">
+        <div id="grid-referensi" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-3">
           <!-- Buku Referensi di-render via JS -->
         </div>
       </section>
 
-      <!-- PROMPT LOGIN JIKA BELUM MASUK -->
+      <!-- PROMPT LOGIN -->
       <div id="login-prompt" class="bg-slate-800/50 rounded-xl p-6 text-center border border-slate-700 max-w-md mx-auto mt-6">
         <h3 class="font-bold text-white text-sm mb-1">Akses Terbatas</h3>
         <p class="text-xs text-slate-400 mb-4">Login untuk melihat koleksi referensi.</p>
@@ -156,7 +125,20 @@
     </div>
   </main>
 
-  <!-- MODAL LOGIN (Ukuran lebih kecil) -->
+  <!-- ================= MOBILE MENU OVERLAY (Kategori) ================= -->
+  <div id="mobile-menu-overlay" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[90] hidden md:hidden transition-opacity">
+    <div id="mobile-menu-panel" class="absolute bottom-0 left-0 right-0 bg-slate-900 rounded-t-3xl p-6 transform translate-y-full transition-transform duration-300 border-t border-slate-700">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="font-bold text-white text-sm">Kategori Buku</h2>
+        <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div id="mobile-menu-links" class="space-y-2 max-h-[60vh] overflow-y-auto">
+        <!-- Diisi via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL LOGIN ================= -->
   <div id="modal-login" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
     <div class="bg-slate-900 rounded-xl w-full max-w-xs p-5 shadow-2xl relative border border-slate-700">
       <button onclick="tutupModalLogin()" class="absolute top-3 right-3 text-slate-400 hover:text-white text-lg">&times;</button>
@@ -179,6 +161,26 @@
     </div>
   </div>
 
+  <!-- ================= BOTTOM NAVIGATION (Khusus HP) ================= -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 z-50 md:hidden flex justify-around items-center h-16 pb-safe">
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-indigo-400 transition">
+      <i class="fa-solid fa-house text-lg mb-1"></i>
+      <span class="text-[9px] font-medium">Beranda</span>
+    </button>
+    <button onclick="toggleMobileMenu()" class="flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-indigo-400 transition">
+      <i class="fa-solid fa-layer-group text-lg mb-1"></i>
+      <span class="text-[9px] font-medium">Kategori</span>
+    </button>
+    <button onclick="document.getElementById('search-input').focus()" class="flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-indigo-400 transition">
+      <i class="fa-solid fa-magnifying-glass text-lg mb-1"></i>
+      <span class="text-[9px] font-medium">Cari</span>
+    </button>
+    <button id="mobile-auth-btn" onclick="bukaModalLogin()" class="flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-indigo-400 transition">
+      <i class="fa-solid fa-user text-lg mb-1"></i>
+      <span class="text-[9px] font-medium" id="mobile-auth-text">Akun</span>
+    </button>
+  </nav>
+
   <script>
     const API_URL = 'https://perpus-smanda.yhanedy.workers.dev'; 
 
@@ -192,6 +194,7 @@
       renderAuthStatus();
       await fetchData();
       renderBooks();
+      renderSidebarMenu();
     }
 
     async function fetchData() {
@@ -205,6 +208,8 @@
           const sel = document.getElementById('filter-kategori');
           sel.innerHTML = '<option value="all">Semua Kategori</option>' + 
             state.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            
+          renderSidebarMenu();
         }
       } catch (e) {
         console.error("Gagal load data", e);
@@ -212,7 +217,66 @@
       }
     }
 
-    // Fungsi Filter dari Sidebar
+    // Render Menu Sidebar & Mobile Menu secara Dinamis berdasarkan Kategori di Database
+    function renderSidebarMenu() {
+      const sidebarContainer = document.getElementById('sidebar-menu-container');
+      const mobileContainer = document.getElementById('mobile-menu-links');
+      
+      // Kelompokkan kategori berdasarkan access_type (umum / referensi)
+      const umumCats = state.categories.filter(c => c.access_type === 'umum');
+      const refCats = state.categories.filter(c => c.access_type === 'referensi');
+
+      let html = `
+        <!-- Tombol Semua Buku -->
+        <button onclick="filterBySidebar('all')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition group-hover:bg-slate-800/50">
+          <div class="w-8 h-8 rounded-lg bg-slate-700 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-border-all text-xs"></i></div>
+          <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Semua Buku</span>
+        </button>
+      `;
+      
+      // Render Kategori Umum
+      umumCats.forEach(c => {
+        html += `
+          <button onclick="filterBySidebar('${c.id}')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition group-hover:bg-slate-800/50">
+            <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-book text-xs"></i></div>
+            <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap line-clamp-1">${c.name}</span>
+          </button>
+        `;
+      });
+
+      // Render Tombol Referensi
+      if (refCats.length > 0) {
+        html += `
+          <div class="pt-2 mt-2 border-t border-slate-700/50">
+            <button onclick="filterBySidebar('referensi')" class="w-full flex items-center px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-amber-400 transition group-hover:bg-slate-800/50 border border-transparent hover:border-amber-500/30">
+              <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-lock text-xs"></i></div>
+              <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Referensi (TKA)</span>
+            </button>
+          </div>
+        `;
+      }
+
+      if (sidebarContainer) sidebarContainer.innerHTML = html;
+      
+      // Render untuk Mobile Menu
+      if (mobileContainer) {
+        let mobileHtml = `<button onclick="filterBySidebar('all'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-lg bg-slate-800 text-sm font-semibold text-white mb-2">Semua Kategori</button>`;
+        umumCats.forEach(c => {
+          mobileHtml += `<button onclick="filterBySidebar('${c.id}'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-lg hover:bg-slate-800 text-sm font-medium text-slate-300 mb-1 flex items-center gap-3">
+            <i class="fa-solid fa-book text-indigo-400 text-xs"></i> ${c.name}
+          </button>`;
+        });
+        if (refCats.length > 0) {
+          mobileHtml += `<div class="border-t border-slate-700 my-2 pt-2"></div>`;
+          mobileHtml += `<button onclick="filterBySidebar('referensi'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-lg hover:bg-slate-800 text-sm font-bold text-amber-400 flex items-center gap-3">
+            <i class="fa-solid fa-lock text-xs"></i> Buku Referensi
+          </button>`;
+        }
+        mobileContainer.innerHTML = mobileHtml;
+      }
+    }
+
+    // Filter Berdasarkan ID Kategori
     function filterBySidebar(catId) {
       if (catId === 'referensi') {
         if (!state.user) {
@@ -221,7 +285,6 @@
           document.getElementById('section-referensi').scrollIntoView({ behavior: 'smooth' });
         }
       } else {
-        // Filter Berdasarkan ID kategori (Catatan: pastikan ID di HTML sesuai dengan ID di DB)
         const sel = document.getElementById('filter-kategori');
         sel.value = catId;
         renderBooks();
@@ -232,6 +295,8 @@
     function renderAuthStatus() {
       const topbarBtn = document.getElementById('topbar-auth-btn');
       const sidebarBox = document.getElementById('sidebar-auth-box');
+      const mobileAuthText = document.getElementById('mobile-auth-text');
+      const mobileAuthBtn = document.getElementById('mobile-auth-btn');
       
       if (state.user) {
         topbarBtn.innerHTML = `
@@ -245,6 +310,9 @@
              <div class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-[10px] font-bold text-white">${state.user.nama.charAt(0)}</div>
           </div>
         `;
+        if(mobileAuthText) mobileAuthText.textContent = "Profil";
+        if(mobileAuthBtn) mobileAuthBtn.setAttribute("onclick", "logout()");
+        if(mobileAuthBtn) mobileAuthBtn.classList.replace('hover:text-indigo-400', 'text-indigo-400');
       } else {
         topbarBtn.innerHTML = `
           <button onclick="bukaModalLogin()" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold rounded-full transition shadow-md shadow-indigo-600/20">Login</button>
@@ -252,6 +320,9 @@
         sidebarBox.innerHTML = `
           <button onclick="bukaModalLogin()" class="w-full py-1.5 rounded-lg bg-slate-800 text-white text-[10px] font-semibold hover:bg-slate-700 transition flex items-center justify-center gap-2"><i class="fa-solid fa-right-to-bracket text-indigo-400"></i> <span class="hidden group-hover:block">Login</span></button>
         `;
+        if(mobileAuthText) mobileAuthText.textContent = "Akun";
+        if(mobileAuthBtn) mobileAuthBtn.setAttribute("onclick", "bukaModalLogin()");
+        if(mobileAuthBtn) mobileAuthBtn.classList.replace('text-indigo-400', 'hover:text-indigo-400');
       }
     }
 
@@ -297,14 +368,19 @@
       }
     }
 
-    // Template Kartu Buku (Sangat kecil)
+    // Perbaikan: Mengubah link /view menjadi /preview agar lebih ramah mobile & tanpa konfirmasi
     function createCard(book) {
+      let safeUrl = book.pdf_url || '';
+      if (safeUrl.includes('drive.google.com')) {
+        safeUrl = safeUrl.replace(/\/view.*$/, '/preview');
+      }
+
       return `
-        <div onclick="openBook('${book.pdf_url}')" class="bg-slate-800 rounded-lg overflow-hidden cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-black/50 transition duration-200 group flex flex-col border border-slate-700">
+        <div onclick="openBook('${safeUrl}')" class="bg-slate-800 rounded-lg overflow-hidden cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:shadow-black/50 transition duration-200 group flex flex-col border border-slate-700">
           <div class="aspect-[3/4] bg-slate-900 relative overflow-hidden">
             ${book.thumbnail_url 
               ? `<img src="${book.thumbnail_url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" />` 
-              : `<div class="w-full h-full flex items-center justify-center text-slate-500 p-1 text-center text-[9px] font-bold">${book.title}</div>`}
+              : `<div class="w-full h-full flex items-center justify-center text-slate-500 p-2 text-center text-[9px] font-bold">${book.title}</div>`}
           </div>
           <div class="p-2">
             <h3 class="text-[10px] font-bold text-slate-300 line-clamp-2 leading-tight group-hover:text-white">${book.title}</h3>
@@ -369,6 +445,24 @@
       localStorage.removeItem('smanda_student');
       renderAuthStatus();
       renderBooks();
+    }
+
+    // --- Fungsi Mobile Menu ---
+    function toggleMobileMenu() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      const panel = document.getElementById('mobile-menu-panel');
+      
+      if (overlay.classList.contains('hidden')) {
+        overlay.classList.remove('hidden');
+        setTimeout(() => {
+          panel.classList.remove('translate-y-full');
+        }, 10);
+      } else {
+        panel.classList.add('translate-y-full');
+        setTimeout(() => {
+          overlay.classList.add('hidden');
+        }, 300);
+      }
     }
 
     init();
