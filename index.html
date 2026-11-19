@@ -135,10 +135,13 @@
         // Simpan sesi universal
         localStorage.setItem('smada_user', JSON.stringify(user));
 
-        // Jika role siswa, simpan juga ke smada_siswa agar kompatibel dengan siswa.html
-        if (role.includes('siswa') || user.nisn) {
-          localStorage.setItem('smada_siswa', JSON.stringify(user));
-          window.location.replace('siswa.html');
+// Jika role siswa, cukup simpan dan refresh halaman agar koleksi referensi muncul
+if (role.includes('siswa') || user.nisn) {
+  localStorage.setItem('smada_student', JSON.stringify(user)); // Simpan sesi perpustakaan
+  closeModal('login-modal'); // Tutup modal login
+  renderAuthUI(); // Perbarui tampilan header
+  renderAll(); // Tampilkan koleksi referensi
+} 
         } 
         // Jika role admin/piket/guru
         else if (role.includes('admin') || role.includes('piket') || role.includes('kontributor') || role.includes('super')) {
