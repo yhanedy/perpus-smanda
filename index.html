@@ -8,210 +8,275 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+    /* Tema Dasar Gelap */
+    body { font-family: 'Inter', sans-serif; background-color: #0F172A; color: #E2E8F0; }
+    /* Scrollbar tipis */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0F172A; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+    /* Animasi loading */
+    .loader { border: 2px solid #334155; border-top: 2px solid #E2E8F0; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
-<body class="min-h-screen flex flex-col text-slate-800">
+<body class="min-h-screen flex h-screen overflow-hidden">
 
-  <!-- HEADER -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center font-bold text-sm shadow-md">S2</div>
-        <div>
-          <h1 class="font-bold text-base text-slate-900 leading-tight">Perpustakaan Smanda</h1>
-          <p class="text-xs text-slate-500">SMAN 2 Karanganyar</p>
+  <!-- SIDEBAR (KIRI) -->
+  <aside class="w-20 lg:w-64 bg-slate-900 border-r border-slate-800 flex-col justify-between hidden md:flex shrink-0 transition-all duration-300">
+    <div>
+      <!-- Logo -->
+      <div class="h-20 flex items-center justify-center lg:justify-start lg:px-6 border-b border-slate-800">
+        <div class="w-10 h-10 bg-indigo-500 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-lg shadow-indigo-500/30">S2</div>
+        <span class="hidden lg:block font-bold text-lg text-white ml-3 tracking-wide">Perpus Smanda</span>
+      </div>
+      
+      <!-- Menu -->
+      <div class="p-4 space-y-2 mt-4">
+        <button class="w-full flex items-center justify-center lg:justify-start gap-4 px-3 py-3 rounded-xl bg-slate-800 text-white transition">
+          <i class="fa-solid fa-house text-indigo-400"></i> <span class="hidden lg:block text-sm font-medium">Beranda</span>
+        </button>
+        <button onclick="bukaModalLogin()" class="w-full flex items-center justify-center lg:justify-start gap-4 px-3 py-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-book"></i> <span class="hidden lg:block text-sm font-medium">Koleksi Saya</span>
+        </button>
+        <button class="w-full flex items-center justify-center lg:justify-start gap-4 px-3 py-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-clock-rotate-left"></i> <span class="hidden lg:block text-sm font-medium">Riwayat</span>
+        </button>
+      </div>
+    </div>
+    <div class="p-4 border-t border-slate-800">
+      <div id="sidebar-auth-box" class="w-full"></div>
+    </div>
+  </aside>
+
+  <!-- KONTEN UTAMA -->
+  <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-950">
+    
+    <!-- TOPBAR -->
+    <header class="h-20 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 shrink-0">
+      <div class="flex items-center gap-4 w-full max-w-xl">
+        <i class="fa-solid fa-bars text-slate-400 lg:hidden"></i>
+        <div class="relative w-full">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+          <input id="search-input" oninput="renderBooks()" type="text" placeholder="Cari judul buku atau materi..." class="w-full pl-10 pr-4 py-2.5 rounded-full bg-slate-800 border-none text-sm text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-indigo-500 transition" />
         </div>
       </div>
-      <div id="auth-status">
-        <!-- Tombol login akan muncul di sini via JS -->
+      <div class="flex items-center gap-4 ml-4">
+        <div id="topbar-auth-btn"></div>
       </div>
+    </header>
+
+    <!-- AREA SCROLLABLE -->
+    <div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-8">
+      
+      <!-- HEADER SECTION -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div>
+          <h1 class="text-2xl font-bold text-white">Jelajah Koleksi</h1>
+          <p class="text-sm text-slate-400 mt-1">Temukan buku pelajaran, referensi, dan soal latihan.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-xs text-slate-400">Filter Kategori:</span>
+          <select id="filter-kategori" onchange="renderBooks()" class="bg-slate-800 text-white text-sm rounded-lg px-3 py-2 outline-none border border-slate-700">
+            <option value="all">Semua</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- KATEGORI BOXES (Warna-warni seperti referensi) -->
+      <section>
+        <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Kategori Populer</h2>
+        <div id="grid-kategori" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <!-- Box Kategori di-render via JS -->
+        </div>
+      </section>
+
+      <!-- KOLEKSI PUBLIK -->
+      <section>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-white">Buku Umum & Mata Pelajaran</h2>
+        </div>
+        <div id="grid-publik" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <!-- Buku Publik di-render via JS -->
+        </div>
+      </section>
+
+      <!-- KOLEKSI REFERENSI (MUNCUL JIKA LOGIN) -->
+      <section id="section-referensi" class="hidden pt-4 border-t border-slate-800">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-lock text-amber-400 text-sm"></i> Buku Referensi Khusus
+          </h2>
+          <span class="text-xs font-semibold bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full border border-amber-500/20">Akses Siswa</span>
+        </div>
+        <div id="grid-referensi" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <!-- Buku Referensi di-render via JS -->
+        </div>
+      </section>
+
+      <!-- PROMPT LOGIN JIKA BELUM MASUK -->
+      <div id="login-prompt" class="bg-slate-900 rounded-2xl p-8 text-center border border-slate-800 shadow-xl max-w-2xl mx-auto mt-8">
+        <div class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner text-2xl text-slate-400">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-2">Ingin mengakses TKA, SMBT, dan Data Soal?</h3>
+        <p class="text-sm text-slate-400 mb-6">Silakan login menggunakan akun siswa Anda untuk membuka koleksi referensi khusus.</p>
+        <button onclick="bukaModalLogin()" class="px-8 py-3 bg-indigo-600 text-white font-semibold text-sm rounded-xl hover:bg-indigo-500 transition shadow-lg shadow-indigo-600/30">Login Siswa</button>
+      </div>
+
     </div>
-  </header>
-
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-8">
-    
-    <!-- Search & Filter -->
-    <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row gap-2">
-      <select id="filter-kategori" onchange="renderBooks()" class="px-4 py-2.5 rounded-xl border-none bg-slate-50 text-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-slate-900 w-full md:w-64">
-        <option value="all">Semua Kategori</option>
-      </select>
-      <input id="search-input" oninput="renderBooks()" type="text" placeholder="Cari judul buku..." class="flex-1 px-4 py-2.5 rounded-xl border-none bg-slate-50 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-slate-900 w-full" />
-    </div>
-
-    <!-- Section: Buku Publik -->
-    <section>
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold text-slate-900">Koleksi Umum & Mata Pelajaran</h2>
-        <span class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">Akses Terbuka</span>
-      </div>
-      <div id="grid-publik" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <!-- Kartu buku publik akan di-render oleh JS -->
-      </div>
-    </section>
-
-    <!-- Section: Referensi Khusus (Hanya Muncul Jika Login) -->
-    <section id="section-referensi" class="hidden">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold text-slate-900">Koleksi Referensi Khusus Siswa</h2>
-        <span class="text-xs font-semibold bg-amber-100 text-amber-800 px-3 py-1 rounded-full">Khusus Login</span>
-      </div>
-      <div id="grid-referensi" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <!-- Kartu buku referensi akan di-render oleh JS -->
-      </div>
-    </section>
-
-    <!-- Pesan Jika Belum Login -->
-    <div id="login-prompt" class="bg-slate-100 rounded-2xl p-8 text-center border border-slate-200">
-      <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-2xl text-slate-400">
-        <i class="fa-solid fa-lock"></i>
-      </div>
-      <h3 class="font-bold text-slate-900 mb-2">Ingin mengakses TKA, SMBT, dan Data Soal?</h3>
-      <p class="text-sm text-slate-500 mb-4">Silakan login menggunakan akun siswa Anda untuk membuka koleksi referensi khusus.</p>
-      <button onclick="bukaModalLogin()" class="px-6 py-2.5 bg-slate-900 text-white font-semibold text-sm rounded-xl hover:bg-slate-800 transition shadow-md">Login Siswa</button>
-    </div>
-
   </main>
 
   <!-- MODAL LOGIN -->
-  <div id="modal-login" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl relative">
-      <button onclick="tutupModalLogin()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl">&times;</button>
+  <div id="modal-login" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-slate-900 rounded-2xl w-full max-w-sm p-6 shadow-2xl relative border border-slate-700">
+      <button onclick="tutupModalLogin()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">&times;</button>
       <div class="text-center mb-6">
-        <div class="w-12 h-12 bg-slate-900 text-white rounded-xl flex items-center justify-center mx-auto mb-3 text-xl shadow-md">
+        <div class="w-12 h-12 bg-indigo-600 text-white rounded-xl flex items-center justify-center mx-auto mb-3 text-xl shadow-lg shadow-indigo-600/30">
           <i class="fa-solid fa-shield-halved"></i>
         </div>
-        <h2 class="font-bold text-lg text-slate-900">Login Siswa</h2>
-        <p class="text-xs text-slate-500 mt-1">Akses Koleksi Referensi & Soal</p>
+        <h2 class="font-bold text-lg text-white">Login Siswa</h2>
+        <p class="text-xs text-slate-400 mt-1">Akses Koleksi Referensi & Soal</p>
       </div>
       <form onsubmit="handleLogin(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Username / NISN</label>
-          <input id="login-user" required type="text" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900" placeholder="Masukkan NISN..." />
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Username / NISN</label>
+          <input id="login-user" required type="text" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white outline-none focus:border-indigo-500" placeholder="Masukkan NISN..." />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
-          <input id="login-pass" required type="password" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-slate-900" placeholder="••••••••" />
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+          <input id="login-pass" required type="password" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white outline-none focus:border-indigo-500" placeholder="••••••••" />
         </div>
-        <div id="login-error" class="hidden text-xs text-red-600 bg-red-50 p-2.5 rounded-lg"></div>
-        <button type="submit" id="btn-login" class="w-full py-2.5 bg-slate-900 text-white font-semibold text-sm rounded-xl hover:bg-slate-800 transition">Masuk</button>
+        <div id="login-error" class="hidden text-xs text-red-400 bg-red-400/10 border border-red-400/20 p-2.5 rounded-lg"></div>
+        <button type="submit" id="btn-login" class="w-full py-2.5 bg-indigo-600 text-white font-semibold text-sm rounded-xl hover:bg-indigo-500 transition">Masuk</button>
       </form>
     </div>
   </div>
 
   <script>
     // ==========================================
-    // KONFIGURASI API URL (WAJIB DISESUAIKAN)
+    // KONFIGURASI API URL
     // ==========================================
     const API_URL = 'https://perpus-smanda.yhanedy.workers.dev'; 
 
-    // State Global
     let state = {
-      user: JSON.parse(localStorage.getItem('smada_student') || 'null'),
+      user: JSON.parse(localStorage.getItem('smanda_student') || 'null'),
       books: [],
       categories: []
     };
 
-    // ==========================================
-    // INITIALIZATION
-    // ==========================================
+    // Warna latar untuk box kategori
+    const CAT_COLORS = ['bg-indigo-600', 'bg-emerald-600', 'bg-rose-600', 'bg-amber-600', 'bg-cyan-600', 'bg-purple-600'];
+
     async function init() {
       renderAuthStatus();
       await fetchData();
+      renderCategories();
       renderBooks();
     }
 
-    // Fetch Data dari API Worker
     async function fetchData() {
       try {
         const res = await fetch(`${API_URL}/api/init`);
         const data = await res.json();
-        
         if (data.ok) {
           state.books = data.books;
           state.categories = data.categories;
           
-          // Isi Dropdown Kategori
           const sel = document.getElementById('filter-kategori');
-          sel.innerHTML = '<option value="all">Semua Kategori</option>' + 
+          sel.innerHTML = '<option value="all">Semua</option>' + 
             state.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
         }
       } catch (e) {
         console.error("Gagal load data", e);
-        document.getElementById('grid-publik').innerHTML = `<div class="col-span-full text-center text-red-500 text-sm py-8">Gagal terhubung ke server perpustakaan.</div>`;
+        document.getElementById('grid-publik').innerHTML = `<div class="col-span-full text-center text-red-400 text-sm py-8">Gagal terhubung ke server.</div>`;
       }
     }
 
-    // ==========================================
-    // RENDER TOMBOL LOGIN DI HEADER
-    // ==========================================
+    // Render Box Kategori (Mirip gambar referensi)
+    function renderCategories() {
+      const box = document.getElementById('grid-kategori');
+      // Ambil maksimal 4 kategori
+      const displayCats = state.categories.slice(0, 4); 
+      box.innerHTML = displayCats.map((c, i) => `
+        <div onclick="document.getElementById('filter-kategori').value='${c.id}'; renderBooks();" class="cursor-pointer ${CAT_COLORS[i % CAT_COLORS.length]} rounded-2xl p-5 shadow-lg flex flex-col justify-between hover:-translate-y-1 transition duration-200">
+          <div class="flex justify-between items-start">
+            <span class="text-white font-bold text-sm leading-tight">${c.name}</span>
+            <i class="fa-solid fa-book-open text-white/50 text-lg"></i>
+          </div>
+          <div class="mt-4">
+            <span class="text-2xl font-black text-white">${state.books.filter(b => b.category_id === c.id).length}</span>
+            <span class="text-[10px] text-white/80 block uppercase tracking-wider">Buku</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Tombol Login (Header & Sidebar)
     function renderAuthStatus() {
-      const box = document.getElementById('auth-status');
+      const topbarBtn = document.getElementById('topbar-auth-btn');
+      const sidebarBox = document.getElementById('sidebar-auth-box');
+      
       if (state.user) {
-        box.innerHTML = `
-          <div class="flex items-center gap-3">
-            <span class="text-xs font-semibold text-slate-700 hidden md:block">Halo, ${state.user.nama}</span>
-            <button onclick="logout()" class="px-4 py-1.5 bg-red-50 text-red-600 text-xs font-semibold rounded-lg hover:bg-red-100 transition flex items-center gap-2">
-              <i class="fa-solid fa-right-from-bracket"></i> Keluar
-            </button>
+        topbarBtn.innerHTML = `
+          <div class="flex items-center gap-3 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+            <span class="text-xs font-semibold text-slate-200 hidden md:block">${state.user.nama}</span>
+            <button onclick="logout()" class="w-7 h-7 bg-red-500/20 text-red-400 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition" title="Keluar"><i class="fa-solid fa-power-off text-xs"></i></button>
+          </div>
+        `;
+        sidebarBox.innerHTML = `
+          <div class="flex flex-col gap-2 items-center lg:items-start">
+             <span class="hidden lg:block text-sm font-bold text-white">${state.user.nama}</span>
+             <span class="hidden lg:block text-[10px] text-indigo-400 uppercase font-bold">Siswa</span>
           </div>
         `;
       } else {
-        box.innerHTML = `
-          <button onclick="bukaModalLogin()" class="px-4 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800 transition shadow-sm flex items-center gap-2">
-            <i class="fa-solid fa-user"></i> Login Siswa
-          </button>
+        topbarBtn.innerHTML = `
+          <button onclick="bukaModalLogin()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-full transition shadow-md shadow-indigo-600/20">Login Siswa</button>
+        `;
+        sidebarBox.innerHTML = `
+          <button onclick="bukaModalLogin()" class="w-full py-2.5 rounded-xl bg-slate-800 text-white text-xs font-semibold hover:bg-slate-700 transition flex items-center justify-center lg:justify-start gap-3 px-3"><i class="fa-solid fa-right-to-bracket text-indigo-400"></i> <span class="hidden lg:block">Login</span></button>
         `;
       }
     }
 
-    // ==========================================
-    // RENDER BUKU (PUBLIK & REFERENSI)
-    // ==========================================
+    // Render Buku
     function renderBooks() {
       const q = document.getElementById('search-input').value.toLowerCase();
       const cat = document.getElementById('filter-kategori').value;
 
-      // Filter Buku Publik (Umum)
       const publikBooks = state.books.filter(b => 
         b.access_type === 'umum' &&
         (cat === 'all' || b.category_id === cat) &&
         (b.title.toLowerCase().includes(q) || (b.category_name || '').toLowerCase().includes(q))
       );
 
-      // Filter Buku Referensi (TKA, SMBT, dll)
       const refBooks = state.books.filter(b => 
         b.access_type === 'referensi' &&
         (cat === 'all' || b.category_id === cat) &&
         (b.title.toLowerCase().includes(q) || (b.category_name || '').toLowerCase().includes(q))
       );
 
-      // Render Buku Publik
       const gridPub = document.getElementById('grid-publik');
       if (publikBooks.length === 0) {
-        gridPub.innerHTML = `<div class="col-span-full text-sm text-slate-400 py-8 text-center bg-white rounded-xl border border-dashed border-slate-300">Tidak ada buku publik yang cocok.</div>`;
+        gridPub.innerHTML = `<div class="col-span-full text-sm text-slate-500 py-8 text-center border border-dashed border-slate-700 rounded-xl">Tidak ada buku publik yang cocok.</div>`;
       } else {
         gridPub.innerHTML = publikBooks.map(b => createCard(b)).join('');
       }
 
-      // Logika Tampilan Referensi
       const secRef = document.getElementById('section-referensi');
       const prompt = document.getElementById('login-prompt');
 
       if (state.user) {
-        // JIKA SUDAH LOGIN: Tampilkan Referensi, Sembunyikan Prompt
         secRef.classList.remove('hidden');
         prompt.classList.add('hidden');
         
         const gridRef = document.getElementById('grid-referensi');
         if (refBooks.length === 0) {
-          gridRef.innerHTML = `<div class="col-span-full text-sm text-slate-400 py-8 text-center bg-white rounded-xl border border-dashed border-slate-300">Tidak ada buku referensi yang cocok.</div>`;
+          gridRef.innerHTML = `<div class="col-span-full text-sm text-slate-500 py-8 text-center border border-dashed border-slate-700 rounded-xl">Tidak ada buku referensi yang cocok.</div>`;
         } else {
           gridRef.innerHTML = refBooks.map(b => createCard(b)).join('');
         }
       } else {
-        // JIKA BELUM LOGIN: Sembunyikan Referensi, Tampilkan Prompt
         secRef.classList.add('hidden');
         prompt.classList.remove('hidden');
       }
@@ -220,31 +285,28 @@
     // Template Kartu Buku
     function createCard(book) {
       return `
-        <div onclick="openBook('${book.pdf_url}')" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden cursor-pointer hover:-translate-y-1 hover:shadow-lg transition duration-200 group flex flex-col">
-          <div class="aspect-[3/4] bg-slate-100 relative overflow-hidden">
+        <div onclick="openBook('${book.pdf_url}')" class="bg-slate-900 rounded-xl overflow-hidden cursor-pointer hover:-translate-y-1 hover:shadow-xl hover:shadow-black/50 transition duration-200 group flex flex-col border border-slate-800">
+          <div class="aspect-[3/4] bg-slate-800 relative overflow-hidden">
             ${book.thumbnail_url 
               ? `<img src="${book.thumbnail_url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" />` 
-              : `<div class="w-full h-full flex items-center justify-center bg-slate-800 text-white p-4 text-center text-xs font-bold">${book.title}</div>`}
+              : `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 text-slate-400 p-4 text-center text-xs font-bold">${book.title}</div>`}
           </div>
           <div class="p-3 flex-1 flex flex-col justify-between">
             <div>
-              <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400">${book.category_name || book.access_type}</span>
-              <h3 class="text-xs font-bold text-slate-800 line-clamp-2 leading-snug mt-1 group-hover:text-slate-900">${book.title}</h3>
+              <span class="text-[9px] font-bold uppercase tracking-wider text-indigo-400">${book.category_name || book.access_type}</span>
+              <h3 class="text-xs font-bold text-slate-200 line-clamp-2 leading-snug mt-1 group-hover:text-white">${book.title}</h3>
             </div>
           </div>
         </div>
       `;
     }
 
-    // Buka PDF di Tab Baru
     function openBook(url) {
       if (!url) return alert('Link PDF tidak tersedia.');
       window.open(url, '_blank');
     }
 
-    // ==========================================
-    // MODAL LOGIN
-    // ==========================================
+    // Modal Login
     function bukaModalLogin() {
       document.getElementById('modal-login').classList.remove('hidden');
       document.getElementById('modal-login').classList.add('flex');
@@ -263,7 +325,7 @@
       const btn = document.getElementById('btn-login');
       const err = document.getElementById('login-error');
 
-      btn.innerHTML = 'Memeriksa...';
+      btn.innerHTML = '<span class="loader"></span>';
       btn.disabled = true;
 
       try {
@@ -275,11 +337,8 @@
         const data = await res.json();
 
         if (data.ok) {
-          // Simpan Sesi Siswa
           state.user = data.user;
-          localStorage.setItem('smada_student', JSON.stringify(data.user));
-          
-          // Tutup Modal & Render Ulang Halaman (TANPA REDIRECT)
+          localStorage.setItem('smanda_student', JSON.stringify(data.user));
           tutupModalLogin();
           renderAuthStatus();
           renderBooks(); 
@@ -296,15 +355,13 @@
       }
     }
 
-    // Logout
     function logout() {
       state.user = null;
       localStorage.removeItem('smada_student');
       renderAuthStatus();
-      renderBooks(); // Sembunyikan lagi menu referensi
+      renderBooks();
     }
 
-    // Jalankan
     init();
   </script>
 </body>
