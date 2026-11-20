@@ -12,13 +12,9 @@
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    .loader { border: 2px solid #cbd5e1; border-top: 2px solid #10b981; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite; display: inline-block; }
+    .loader { border: 2px solid #cbd5e1; border-top: 2px solid #3b82f6; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite; display: inline-block; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    
-    /* Efek Kaca untuk Sidebar Melayang */
     .glass-sidebar { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(0, 0, 0, 0.05); }
-    
-    /* Desain Login Split Screen */
     .login-split { display: flex; height: 100vh; width: 100vw; }
     .login-left { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 3rem; color: white; }
     .login-left::before { content: ''; position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.1); border-radius: 50%; top: -100px; left: -100px; }
@@ -27,9 +23,8 @@
 </head>
 <body class="min-h-screen bg-gray-100">
 
-  <!-- ================= HALAMAN LOGIN (SPLIT SCREEN) ================= -->
+  <!-- LOGIN SCREEN -->
   <div id="admin-login-screen" class="login-split fixed inset-0 z-[100]">
-    <!-- Sisi Kiri: Welcome / Branding -->
     <div class="login-left hidden md:flex md:w-1/2">
       <div class="relative z-10 max-w-md">
         <h1 class="text-4xl font-bold mb-4 leading-tight">WELCOME<br><span class="text-blue-200">SMAN 2 Karanganyar</span></h1>
@@ -43,15 +38,12 @@
         </div>
       </div>
     </div>
-
-    <!-- Sisi Kanan: Form Login -->
     <div class="w-full md:w-1/2 bg-white flex items-center justify-center p-8 relative">
       <div class="w-full max-w-sm">
         <div class="text-center mb-8">
           <h2 class="text-2xl font-bold text-gray-800">Sign in</h2>
           <p class="text-xs text-gray-500 mt-1">Masukkan kredensial Anda untuk melanjutkan.</p>
         </div>
-
         <form onsubmit="handleAdminLogin(event)" class="space-y-5">
           <div>
             <label class="block text-xs font-semibold text-gray-600 mb-1">Username</label>
@@ -67,39 +59,24 @@
               <input id="adm-pass" required type="password" placeholder="••••••••" class="w-full pl-9 pr-3 py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" />
             </div>
           </div>
-          
-          <div class="flex items-center justify-between text-xs">
-            <label class="flex items-center gap-2 text-gray-600"><input type="checkbox" class="rounded border-gray-300 text-blue-500 focus:ring-blue-500"> Remember me</label>
-            <a href="#" class="text-blue-600 hover:underline">Forgot Password?</a>
-          </div>
-
           <div id="adm-login-error" class="hidden text-xs text-red-500 bg-red-50 border border-red-100 p-2.5 rounded-lg"></div>
-          
-          <button type="submit" id="adm-login-btn" class="w-full py-2.5 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition shadow-lg shadow-blue-600/30">
-            Sign in
-          </button>
+          <button type="submit" id="adm-login-btn" class="w-full py-2.5 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition shadow-lg shadow-blue-600/30">Sign in</button>
         </form>
-
         <div class="mt-6 text-center">
-          <a href="index.html" class="text-xs font-semibold text-gray-400 hover:text-blue-600 transition flex items-center justify-center gap-1">
-            <i class="fa-solid fa-arrow-left"></i> Kembali ke Perpustakaan
-          </a>
+          <a href="index.html" class="text-xs font-semibold text-gray-400 hover:text-blue-600 transition flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> Kembali ke Perpustakaan</a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ================= DASHBOARD ADMIN ================= -->
+  <!-- DASHBOARD -->
   <div id="admin-dashboard-screen" class="hidden w-full h-screen flex overflow-hidden p-4 gap-4">
-    
-    <!-- SIDEBAR MELAYANG -->
     <aside class="glass-sidebar w-16 hover:w-56 transition-all duration-300 rounded-2xl flex-col justify-between shadow-lg z-50 overflow-hidden shrink-0 group">
       <div>
         <div class="h-16 flex items-center justify-center border-b border-gray-100">
           <img src="https://lh3.googleusercontent.com/d/1YQYf0kgtLInAzpSJKJ_3Da86dIoVXU6n" class="w-8 h-8 rounded-full object-cover shadow-sm" alt="Logo">
           <span class="ml-3 font-bold text-gray-800 text-xs hidden group-hover:block whitespace-nowrap">SMAN 2 Karanganyar</span>
         </div>
-        
         <div class="p-3 space-y-1 mt-2">
           <button onclick="setMenu('umum')" id="nav-umum" class="nav-btn w-full flex items-center px-3 py-2.5 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-gray-800 transition">
             <i class="fa-solid fa-book text-sm w-5 text-center"></i>
@@ -113,9 +90,13 @@
             <i class="fa-solid fa-users text-sm w-5 text-center"></i>
             <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Manajemen Akun</span>
           </button>
+          <!-- MENU BARU: PENGAJUAN -->
+          <button onclick="setMenu('pengajuan')" id="nav-pengajuan" class="nav-btn w-full flex items-center px-3 py-2.5 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-gray-800 transition">
+            <i class="fa-solid fa-envelope-open-text text-sm w-5 text-center"></i>
+            <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Pengajuan Akses</span>
+          </button>
         </div>
       </div>
-
       <div class="p-3 border-t border-gray-100 mb-2">
         <button onclick="adminLogout()" class="w-full flex items-center px-3 py-2.5 rounded-xl text-red-500 hover:bg-red-50 transition">
           <i class="fa-solid fa-arrow-right-from-bracket text-sm w-5 text-center"></i>
@@ -124,10 +105,7 @@
       </div>
     </aside>
 
-    <!-- KONTEN UTAMA -->
     <main class="flex-1 flex-col h-full overflow-hidden gap-4">
-      
-      <!-- TOPBAR -->
       <header class="h-14 bg-white rounded-2xl shadow-sm flex items-center justify-between px-6 shrink-0">
         <h1 class="font-bold text-gray-800 text-sm" id="page-title">Kelola Buku Umum</h1>
         <div class="flex items-center gap-4">
@@ -141,26 +119,21 @@
           </div>
         </div>
       </header>
-
-      <!-- AREA SCROLLABLE -->
       <div id="admin-content" class="flex-1 overflow-y-auto pr-1">
         <div class="text-center py-12 text-gray-400 text-sm">Memuat data...</div>
       </div>
     </main>
   </div>
 
-  <!-- ================= MODAL EDIT / TAMBAH BUKU ================= -->
+  <!-- MODAL BUKU -->
   <div id="modal-book" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
     <div id="modal-book-container" class="bg-white rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden flex transition-all duration-500">
-      
       <div id="modal-left-panel" class="w-full p-6 space-y-4 transition-all duration-500 bg-white">
         <div class="flex justify-between items-center mb-2">
           <h2 id="modal-book-title" class="font-bold text-lg text-gray-800">Tambah Buku Baru</h2>
           <button onclick="closeModal('modal-book')" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        
         <input type="hidden" id="book-id" value="">
-        
         <div>
           <label class="block text-[10px] font-bold text-gray-500 mb-1">Link PDF (Google Drive)</label>
           <div class="flex gap-2">
@@ -168,7 +141,6 @@
             <button type="button" onclick="autoExtractPdf(this)" class="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition shadow-md whitespace-nowrap">Ekstrak</button>
           </div>
         </div>
-
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-[10px] font-bold text-gray-500 mb-1">Judul Buku</label>
@@ -179,7 +151,6 @@
             <select id="book-category" class="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs outline-none focus:border-blue-500"></select>
           </div>
         </div>
-
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-[10px] font-bold text-gray-500 mb-1">Penulis</label>
@@ -190,13 +161,11 @@
             <input id="book-thumb" type="text" placeholder="https://..." class="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs outline-none focus:border-blue-500">
           </div>
         </div>
-
         <div class="pt-4 flex justify-end gap-2 border-t border-gray-100 mt-4">
           <button onclick="closeModal('modal-book')" class="px-4 py-2 text-xs font-bold text-gray-500 hover:bg-gray-100 rounded-lg">Batal</button>
           <button onclick="saveBook()" id="btn-save-book" class="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 shadow-md transition">Simpan Data</button>
         </div>
       </div>
-
       <div id="modal-right-panel" class="w-0 opacity-0 bg-gray-50 border-l border-gray-100 flex-col items-center justify-center p-6 transition-all duration-500 overflow-hidden">
         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-4">Live Preview</p>
         <div class="w-32 aspect-[3/4] bg-white rounded-lg shadow-xl overflow-hidden mb-4 border border-gray-200 relative">
@@ -205,11 +174,10 @@
         <h3 id="preview-title" class="text-sm font-bold text-gray-800 text-center line-clamp-2">Judul Buku Tampil Di Sini</h3>
         <p id="preview-author" class="text-[10px] text-gray-500 mt-1">Penulis</p>
       </div>
-
     </div>
   </div>
 
-  <!-- ================= MODAL TAMBAH KATEGORI ================= -->
+  <!-- MODAL KATEGORI -->
   <div id="modal-cat" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
     <div class="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-6">
       <h2 class="font-bold text-lg text-gray-800 mb-4">Tambah Kategori Baru</h2>
@@ -228,8 +196,8 @@
       user: JSON.parse(localStorage.getItem('smanda_admin') || 'null'),
       categories: [],
       books: [],
-      activeMenu: 'umum',
-      editingBookId: null
+      pengajuan: [],
+      activeMenu: 'umum'
     };
 
     initAdmin();
@@ -240,12 +208,10 @@
         document.getElementById('admin-dashboard-screen').classList.add('hidden');
         return;
       }
-
       document.getElementById('admin-login-screen').classList.add('hidden');
       document.getElementById('admin-dashboard-screen').classList.remove('hidden');
       document.getElementById('admin-dashboard-screen').classList.add('flex');
       document.getElementById('adm-profile-badge').textContent = `${state.user.nama}`;
-
       await fetchData();
       setMenu('umum');
     }
@@ -263,17 +229,23 @@
       }
     }
 
+    async function fetchPengajuan() {
+      try {
+        const res = await fetch(`${API_URL}/api/pengajuan`);
+        const data = await res.json();
+        if (data.ok) state.pengajuan = data.pengajuan;
+      } catch (e) { console.error(e); }
+    }
+
     async function handleAdminLogin(e) {
       e.preventDefault();
       const username = document.getElementById('adm-user').value;
       const password = document.getElementById('adm-pass').value;
       const errBox = document.getElementById('adm-login-error');
       const btn = document.getElementById('adm-login-btn');
-
       btn.innerHTML = '<span class="loader"></span>';
       btn.disabled = true;
       errBox.classList.add('hidden');
-
       try {
         const res = await fetch(`${API_URL}/api/login`, {
           method: 'POST',
@@ -281,7 +253,6 @@
           body: JSON.stringify({ username, password })
         });
         const data = await res.json();
-        
         if (!data.ok) {
           errBox.textContent = data.error || 'Gagal login.';
           errBox.classList.remove('hidden');
@@ -292,7 +263,6 @@
           errBox.classList.remove('hidden');
           return;
         }
-        
         state.user = data.user;
         localStorage.setItem('smanda_admin', JSON.stringify(data.user));
         initAdmin();
@@ -313,27 +283,27 @@
 
     function setMenu(menu) {
       state.activeMenu = menu;
-      
       document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('bg-blue-50', 'text-blue-600');
         btn.classList.add('text-gray-400', 'hover:bg-gray-50');
       });
-      
       const activeBtn = document.getElementById('nav-' + menu);
       if(activeBtn) {
         activeBtn.classList.remove('text-gray-400', 'hover:bg-gray-50');
         activeBtn.classList.add('bg-blue-50', 'text-blue-600');
       }
-
       const titles = {
         'umum': 'Kelola Buku Umum',
         'referensi': 'Kelola Buku Referensi',
-        'users': 'Manajemen Akun'
+        'users': 'Manajemen Akun',
+        'pengajuan': 'Pengajuan Akses Referensi'
       };
       document.getElementById('page-title').textContent = titles[menu];
-
+      
       if(menu === 'users') {
         renderUsersMenu();
+      } else if (menu === 'pengajuan') {
+        renderPengajuanMenu();
       } else {
         renderBooksMenu();
       }
@@ -343,18 +313,12 @@
       const isUmum = state.activeMenu === 'umum';
       const catData = state.categories.filter(c => c.access_type === state.activeMenu);
       const filteredBooks = state.books.filter(b => b.access_type === state.activeMenu);
-
       const html = `
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
           <div class="flex gap-2">
-            <button onclick="openModalBook()" class="px-4 py-2 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition shadow-sm flex items-center gap-2">
-              <i class="fa-solid fa-plus"></i> Tambah Buku
-            </button>
-            <button onclick="openModalCat()" class="px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-700 text-xs font-bold hover:bg-gray-50 transition shadow-sm flex items-center gap-2">
-              <i class="fa-solid fa-folder-plus"></i> Kategori
-            </button>
+            <button onclick="openModalBook()" class="px-4 py-2 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition shadow-sm flex items-center gap-2"><i class="fa-solid fa-plus"></i> Tambah Buku</button>
+            <button onclick="openModalCat()" class="px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-700 text-xs font-bold hover:bg-gray-50 transition shadow-sm flex items-center gap-2"><i class="fa-solid fa-folder-plus"></i> Kategori</button>
           </div>
-          
           <div class="flex gap-2 w-full md:w-auto">
             <select id="filter-cat" onchange="filterTableBooks()" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-xs text-gray-700 outline-none">
               <option value="all">Semua Kategori</option>
@@ -363,7 +327,6 @@
             <input type="text" id="search-book" oninput="filterTableBooks()" placeholder="Cari judul..." class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-xs text-gray-700 outline-none w-full md:w-64" />
           </div>
         </div>
-
         <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
           <table class="w-full text-left border-collapse" id="table-books">
             <thead class="bg-gray-50 border-b border-gray-100">
@@ -382,9 +345,7 @@
                         ${b.thumbnail_url ? `<img src="${b.thumbnail_url}" class="w-8 h-10 object-cover rounded shadow-sm">` : `<div class="w-8 h-10 bg-gray-100 rounded flex items-center justify-center text-gray-400 text-[8px]">No Img</div>`}
                         <div>
                           <div class="font-bold text-gray-800 mb-0.5">${b.title}</div>
-                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold tracking-wide uppercase ${isUmum ? 'bg-blue-100 text-blue-600' : 'bg-amber-100 text-amber-600'}">
-                            ${b.category_name || 'Tanpa Kategori'}
-                          </span>
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold tracking-wide uppercase ${isUmum ? 'bg-blue-100 text-blue-600' : 'bg-amber-100 text-amber-600'}">${b.category_name || 'Tanpa Kategori'}</span>
                         </div>
                       </div>
                     </td>
@@ -443,7 +404,6 @@
         document.getElementById('book-author').value = book.author;
         document.getElementById('book-thumb').value = book.thumbnail_url;
         catSelect.value = book.category_id;
-        
         tampilkanPreview(book.title, book.author, book.thumbnail_url);
       } else {
         title.textContent = 'Tambah Buku Baru';
@@ -453,7 +413,6 @@
         document.getElementById('book-author').value = 'Tim Guru SMAN 2 Karanganyar';
         document.getElementById('book-thumb').value = '';
       }
-
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
@@ -462,15 +421,12 @@
       document.getElementById('preview-img').src = thumb || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='10' fill='%239ca3af'%3ENo Cover%3C/text%3E%3C/svg%3E";
       document.getElementById('preview-title').textContent = title || "-";
       document.getElementById('preview-author').textContent = author || "-";
-
       const left = document.getElementById('modal-left-panel');
       const right = document.getElementById('modal-right-panel');
       const container = document.getElementById('modal-book-container');
-
       container.classList.replace('max-w-3xl', 'max-w-4xl');
       left.classList.replace('w-full', 'w-1/2');
       left.classList.add('border-r', 'border-gray-100');
-      
       right.classList.remove('w-0', 'opacity-0');
       right.classList.add('w-1/2', 'opacity-100', 'flex');
     }
@@ -478,11 +434,9 @@
     async function autoExtractPdf(btnElement) {
       const url = document.getElementById('book-pdf').value.trim();
       if (!url) return alert('Masukkan link PDF terlebih dahulu.');
-      
       const oldText = btnElement.innerHTML;
       btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
       btnElement.disabled = true;
-
       try {
         const res = await fetch(`${API_URL}/api/extract`, {
           method: 'POST',
@@ -494,10 +448,8 @@
           const title = data.title || '';
           const thumb = data.thumbnailUrl || '';
           const author = document.getElementById('book-author').value;
-          
           document.getElementById('book-title').value = title;
           document.getElementById('book-thumb').value = thumb;
-          
           tampilkanPreview(title, author, thumb);
         } else {
           alert('Gagal mengekstrak metadata.');
@@ -517,28 +469,14 @@
       const category_id = document.getElementById('book-category').value;
       const author = document.getElementById('book-author').value.trim();
       const thumbnail_url = document.getElementById('book-thumb').value.trim();
-
       if (!pdf_url || !title) return alert('Link PDF dan Judul wajib diisi.');
-
       const btn = document.getElementById('btn-save-book');
       btn.innerHTML = '<span class="loader"></span>';
       btn.disabled = true;
-
       try {
         const urlApi = id ? '/api/books/update' : '/api/books'; 
-        const payload = {
-          id: id,
-          title, author, pdf_url, thumbnail_url, category_id,
-          access_type: state.activeMenu,
-          uploaded_by: state.user.username
-        };
-
-        const res = await fetch(API_URL + urlApi, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        
+        const payload = { id, title, author, pdf_url, thumbnail_url, category_id, access_type: state.activeMenu, uploaded_by: state.user.username };
+        const res = await fetch(API_URL + urlApi, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         const data = await res.json();
         if (data.ok) {
           closeModal('modal-book');
@@ -558,21 +496,10 @@
     async function deleteBook(id) {
       if (!confirm('Yakin ingin menghapus dokumen ini?')) return;
       try {
-        const res = await fetch(`${API_URL}/api/books/delete`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id })
-        });
+        const res = await fetch(`${API_URL}/api/books/delete`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
         const data = await res.json();
-        if(data.ok) {
-          await fetchData();
-          setMenu(state.activeMenu);
-        } else {
-          alert("Gagal menghapus: " + data.error);
-        }
-      } catch (e) {
-        alert("Gagal menghapus: " + e.message);
-      }
+        if(data.ok) { await fetchData(); setMenu(state.activeMenu); } else { alert("Gagal menghapus: " + data.error); }
+      } catch (e) { alert("Gagal menghapus: " + e.message); }
     }
 
     function openModalCat() {
@@ -585,24 +512,11 @@
     async function saveCategory() {
       const name = document.getElementById('new-cat-name').value.trim();
       if (!name) return;
-
       try {
-        const res = await fetch(`${API_URL}/api/categories`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, access_type: state.activeMenu })
-        });
+        const res = await fetch(`${API_URL}/api/categories`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, access_type: state.activeMenu }) });
         const data = await res.json();
-        if(data.ok) {
-          closeModal('modal-cat');
-          await fetchData();
-          setMenu(state.activeMenu);
-        } else {
-          alert("Gagal menambah kategori: " + data.error);
-        }
-      } catch (e) {
-        alert("Gagal menambah kategori: " + e.message);
-      }
+        if(data.ok) { closeModal('modal-cat'); await fetchData(); setMenu(state.activeMenu); } else { alert("Gagal menambah kategori: " + data.error); }
+      } catch (e) { alert("Gagal menambah kategori: " + e.message); }
     }
 
     function renderUsersMenu() {
@@ -610,23 +524,14 @@
         document.getElementById('admin-content').innerHTML = `<div class="bg-amber-50 text-amber-600 p-4 rounded-xl border border-amber-200 text-sm">Hanya Super Admin yang dapat mengakses Manajemen Akun.</div>`;
         return;
       }
-
       document.getElementById('admin-content').innerHTML = `
         <div class="grid md:grid-cols-3 gap-4">
           <div class="md:col-span-1 bg-white rounded-2xl p-5 h-fit shadow-sm border border-gray-100">
-            <h2 class="font-bold text-gray-800 text-sm mb-4 flex items-center gap-2">
-              <i class="fa-solid fa-user-plus text-gray-400"></i> Tambah Akun
-            </h2>
+            <h2 class="font-bold text-gray-800 text-sm mb-4 flex items-center gap-2"><i class="fa-solid fa-user-plus text-gray-400"></i> Tambah Akun</h2>
             <form onsubmit="createUser(event)" class="space-y-3">
-              <div>
-                <input id="usr-nama" type="text" required placeholder="Nama Lengkap" class="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-800 outline-none focus:border-blue-500" />
-              </div>
-              <div>
-                <input id="usr-username" type="text" required placeholder="Username / NIS" class="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-800 outline-none focus:border-blue-500" />
-              </div>
-              <div>
-                <input id="usr-pass" type="text" required placeholder="Password" class="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-800 outline-none focus:border-blue-500" />
-              </div>
+              <div><input id="usr-nama" type="text" required placeholder="Nama Lengkap" class="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-800 outline-none focus:border-blue-500" /></div>
+              <div><input id="usr-username" type="text" required placeholder="Username / NIS" class="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-800 outline-none focus:border-blue-500" /></div>
+              <div><input id="usr-pass" type="text" required placeholder="Password" class="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-800 outline-none focus:border-blue-500" /></div>
               <div>
                 <select id="usr-role" class="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-800 outline-none focus:border-blue-500">
                   <option value="kontributor">Admin (Guru)</option>
@@ -637,14 +542,9 @@
               <button type="submit" class="w-full py-2 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition shadow-sm">Buat Akun</button>
             </form>
           </div>
-
           <div class="md:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-              <h2 class="font-bold text-gray-800 text-sm">Daftar Pengguna</h2>
-            </div>
-            <div id="users-list-box" class="overflow-y-auto flex-1">
-              <div class="p-8 text-center text-gray-400 text-xs">Memuat akun...</div>
-            </div>
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50"><h2 class="font-bold text-gray-800 text-sm">Daftar Pengguna</h2></div>
+            <div id="users-list-box" class="overflow-y-auto flex-1"><div class="p-8 text-center text-gray-400 text-xs">Memuat akun...</div></div>
           </div>
         </div>
       `;
@@ -657,30 +557,18 @@
         const data = await res.json();
         const box = document.getElementById('users-list-box');
         if (!box || !data.ok) return;
-        
-        if(data.users.length === 0) {
-           box.innerHTML = '<div class="p-8 text-center text-gray-400 text-xs">Belum ada akun.</div>';
-           return;
-        }
-
+        if(data.users.length === 0) { box.innerHTML = '<div class="p-8 text-center text-gray-400 text-xs">Belum ada akun.</div>'; return; }
         box.innerHTML = data.users.map(u => `
           <div class="flex items-center justify-between p-3 border-b border-gray-50 hover:bg-gray-50 transition">
             <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs uppercase">
-                ${u.nama.charAt(0)}
-              </div>
+              <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs uppercase">${u.nama.charAt(0)}</div>
               <div>
                 <div class="font-bold text-xs text-gray-800">${u.nama}</div>
                 <div class="text-[10px] text-gray-500">@${u.username} • <span class="uppercase text-[9px] font-bold">${u.role}</span></div>
               </div>
             </div>
-            <div class="flex gap-1">
-               <!-- TOMBOL EDIT & HAPUS PENGGUNA -->
-               <button onclick="editUser('${u.id}')" class="w-6 h-6 rounded bg-blue-50 text-blue-500 hover:bg-blue-100 flex items-center justify-center" title="Edit"><i class="fa-solid fa-pen text-[10px]"></i></button>
-               <button onclick="deleteUser('${u.id}')" class="w-6 h-6 rounded bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center" title="Hapus"><i class="fa-solid fa-trash text-[10px]"></i></button>
-               <button onclick="toggleUser('${u.id}', ${String(u.is_active) === '1' ? 0 : 1})" class="text-[10px] font-bold px-2 py-1 rounded border ${String(u.is_active) === '1' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-gray-100 text-gray-500 border-gray-200'}">
-                  ${String(u.is_active) === '1' ? 'Aktif' : 'Nonaktif'}
-               </button>
+            <div>
+               <button onclick="toggleUser('${u.id}', ${String(u.is_active) === '1' ? 0 : 1})" class="text-[10px] font-bold px-2 py-1 rounded border ${String(u.is_active) === '1' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-gray-100 text-gray-500 border-gray-200'}">${String(u.is_active) === '1' ? 'Aktif' : 'Nonaktif'}</button>
             </div>
           </div>
         `).join('');
@@ -693,53 +581,91 @@
       const username = document.getElementById('usr-username').value.trim();
       const password = document.getElementById('usr-pass').value.trim();
       const role = document.getElementById('usr-role').value;
-      
       const btn = e.target.querySelector('button[type="submit"]');
       btn.innerHTML = '...'; btn.disabled = true;
-
       try {
-        const res = await fetch(`${API_URL}/api/users`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nama, username, password, role })
-        });
+        const res = await fetch(`${API_URL}/api/users`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nama, username, password, role }) });
         const data = await res.json();
-        if(data.ok) {
-          e.target.reset();
-          loadUsersList();
-        } else {
-          alert("Gagal tambah akun: " + data.error);
-        }
-      } catch (err) {
-        alert("Gagal tambah akun: " + err.message);
-      } finally {
-        btn.innerHTML = 'Buat Akun'; btn.disabled = false;
-      }
+        if(data.ok) { e.target.reset(); loadUsersList(); } else { alert("Gagal tambah akun: " + data.error); }
+      } catch (err) { alert("Gagal tambah akun: " + err.message); } finally { btn.innerHTML = 'Buat Akun'; btn.disabled = false; }
     }
 
     async function toggleUser(id, is_active) {
       try {
-        await fetch(`${API_URL}/api/users/toggle`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, is_active })
-        });
+        await fetch(`${API_URL}/api/users/toggle`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, is_active }) });
         loadUsersList();
       } catch (e) { alert("Gagal update status akun."); }
     }
 
-    // --- Fitur Edit & Hapus Pengguna ---
-    function editUser(id) {
-      // Fitur edit pengguna membutuhkan endpoint API khusus.
-      // Karena belum ada, kita tampilkan pesan simulasi.
-      alert("Fitur edit pengguna membutuhkan endpoint API tambahan (PUT /api/users).");
+    // ==================== MENU PENGAJUAN ====================
+    async function renderPengajuanMenu() {
+      document.getElementById('admin-content').innerHTML = `
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+            <h2 class="font-bold text-gray-800 text-sm">Daftar Pengajuan Akses Referensi</h2>
+          </div>
+          <div id="pengajuan-list-box" class="overflow-y-auto">
+            <div class="p-8 text-center text-gray-400 text-xs">Memuat pengajuan...</div>
+          </div>
+        </div>
+      `;
+      await fetchPengajuan();
+      loadPengajuanList();
     }
 
-    async function deleteUser(id) {
-      if (!confirm('Yakin ingin menghapus akun ini?')) return;
-      // Fitur hapus pengguna membutuhkan endpoint API khusus.
-      // Karena belum ada, kita tampilkan pesan simulasi.
-      alert("Fitur hapus pengguna membutuhkan endpoint API tambahan (POST /api/users/delete).");
+    function loadPengajuanList() {
+      const box = document.getElementById('pengajuan-list-box');
+      if (state.pengajuan.length === 0) {
+        box.innerHTML = '<div class="p-8 text-center text-gray-400 text-xs">Belum ada pengajuan masuk.</div>';
+        return;
+      }
+      
+      box.innerHTML = state.pengajuan.map(p => {
+        let badgeClass = 'bg-gray-100 text-gray-600';
+        if (p.status === 'pending') badgeClass = 'bg-amber-100 text-amber-600';
+        if (p.status === 'approved') badgeClass = 'bg-emerald-100 text-emerald-600';
+        if (p.status === 'rejected') badgeClass = 'bg-red-100 text-red-600';
+        
+        return `
+          <div class="flex items-center justify-between p-4 border-b border-gray-50 hover:bg-gray-50 transition">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <div class="font-bold text-sm text-gray-800">${p.nama}</div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeClass} uppercase">${p.status}</span>
+              </div>
+              <div class="text-xs text-gray-500 mb-1"><i class="fa-solid fa-envelope text-[10px] mr-1"></i> ${p.email} • <i class="fa-solid fa-school text-[10px] mr-1"></i> ${p.kelas}</div>
+              <div class="text-[10px] text-gray-400 italic">"${p.alasan}"</div>
+            </div>
+            <div class="flex gap-2">
+              ${p.status === 'pending' ? `
+                <button onclick="actionPengajuan('${p.id}', 'approve')" class="px-3 py-1.5 bg-emerald-500 text-white text-[10px] font-bold rounded hover:bg-emerald-600 transition">Setujui</button>
+                <button onclick="actionPengajuan('${p.id}', 'reject')" class="px-3 py-1.5 bg-red-500 text-white text-[10px] font-bold rounded hover:bg-red-600 transition">Tolak</button>
+              ` : `
+                <span class="text-[10px] text-gray-400">Selesai diproses</span>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function actionPengajuan(id, action) {
+      if (!confirm(`Yakin ingin ${action === 'approve' ? 'menyetujui' : 'menolak'} pengajuan ini?`)) return;
+      try {
+        const res = await fetch(`${API_URL}/api/pengajuan/action`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, action })
+        });
+        const data = await res.json();
+        if(data.ok) {
+          alert(data.message);
+          await fetchPengajuan();
+          loadPengajuanList();
+        } else {
+          alert("Gagal: " + data.error);
+        }
+      } catch (e) { alert("Error jaringan: " + e.message); }
     }
 
     function closeModal(id) {
