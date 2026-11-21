@@ -1,3 +1,25 @@
+Betul, pada kode sebelumnya tombol hapus memang belum saya tambahkan (hanya ada tombol "Aktif/Nonaktif"). 
+
+Saya sudah menambahkan fitur **Hapus Akun** tersebut. Karena API Worker Anda sebelumnya belum memiliki endpoint untuk menghapus user, saya juga menambahkan endpoint `/api/users/delete` di file Worker.
+
+Berikut adalah perbaikan untuk **File Worker** dan **File Admin**. (File `index.html` tidak perlu diubah).
+
+### 1. Tambahkan Endpoint di Worker API (`worker.js`)
+Tambahkan kode di bawah ini **sebelum** baris `return jsonResponse({ ok: false, error: "Endpoint API tidak ditemukan" }, 404);`
+
+```javascript
+      // 10.b Hapus Akun
+      if (path === "/api/users/delete" && request.method === "POST") {
+        const { id } = await request.json();
+        await tursoQuery(env, [{ sql: "DELETE FROM users WHERE id = ?", args: [{ type: "text", value: id }] }]);
+        return jsonResponse({ ok: true });
+      }
+```
+
+### 2. Update File Admin (`admin.html`)
+Ganti seluruh isi file `admin.html` dengan kode di bawah ini. Saya sudah menambahkan tombol **Hapus (ikon tempat sampah)** di sebelah tombol Aktif/Nonaktif.
+
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -90,7 +112,7 @@
             <i class="fa-solid fa-users text-sm w-5 text-center"></i>
             <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Manajemen Akun</span>
           </button>
-          <!-- MENU BARU: PENGAJUAN -->
+          <!-- MENU PENGAJUAN -->
           <button onclick="setMenu('pengajuan')" id="nav-pengajuan" class="nav-btn w-full flex items-center px-3 py-2.5 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-gray-800 transition">
             <i class="fa-solid fa-envelope-open-text text-sm w-5 text-center"></i>
             <span class="ml-3 text-xs font-medium hidden group-hover:block whitespace-nowrap">Pengajuan Akses</span>
@@ -519,6 +541,7 @@
       } catch (e) { alert("Gagal menambah kategori: " + e.message); }
     }
 
+    // ==================== MANAJEMEN AKUN (DENGAN HAPUS) ====================
     function renderUsersMenu() {
       if (state.user.role !== 'super_admin') {
         document.getElementById('admin-content').innerHTML = `<div class="bg-amber-50 text-amber-600 p-4 rounded-xl border border-amber-200 text-sm">Hanya Super Admin yang dapat mengakses Manajemen Akun.</div>`;
@@ -558,6 +581,7 @@
         const box = document.getElementById('users-list-box');
         if (!box || !data.ok) return;
         if(data.users.length === 0) { box.innerHTML = '<div class="p-8 text-center text-gray-400 text-xs">Belum ada akun.</div>'; return; }
+        
         box.innerHTML = data.users.map(u => `
           <div class="flex items-center justify-between p-3 border-b border-gray-50 hover:bg-gray-50 transition">
             <div class="flex items-center gap-3">
@@ -567,8 +591,14 @@
                 <div class="text-[10px] text-gray-500">@${u.username} • <span class="uppercase text-[9px] font-bold">${u.role}</span></div>
               </div>
             </div>
-            <div>
-               <button onclick="toggleUser('${u.id}', ${String(u.is_active) === '1' ? 0 : 1})" class="text-[10px] font-bold px-2 py-1 rounded border ${String(u.is_active) === '1' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-gray-100 text-gray-500 border-gray-200'}">${String(u.is_active) === '1' ? 'Aktif' : 'Nonaktif'}</button>
+            <div class="flex items-center gap-1">
+               <!-- TOMBOL HAPUS AKUN -->
+               <button onclick="deleteUser('${u.id}')" class="w-7 h-7 rounded bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center transition" title="Hapus Akun"><i class="fa-solid fa-trash text-[10px]"></i></button>
+               
+               <!-- TOMBOL AKTIF/NONAKTIF -->
+               <button onclick="toggleUser('${u.id}', ${String(u.is_active) === '1' ? 0 : 1})" class="text-[10px] font-bold px-2 py-1 rounded border ${String(u.is_active) === '1' ? 'bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-100' : 'bg-gray-100 text-gray-500 border-gray-200 hover:bg-gray-200'} transition ml-1">
+                  ${String(u.is_active) === '1' ? 'Aktif' : 'Nonaktif'}
+               </button>
             </div>
           </div>
         `).join('');
@@ -595,6 +625,19 @@
         await fetch(`${API_URL}/api/users/toggle`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, is_active }) });
         loadUsersList();
       } catch (e) { alert("Gagal update status akun."); }
+    }
+
+    async function deleteUser(id) {
+      if (!confirm('Yakin ingin menghapus akun ini secara permanen? Tindakan ini tidak dapat dibatalkan.')) return;
+      try {
+        const res = await fetch(`${API_URL}/api/users/delete`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+        const data = await res.json();
+        if(data.ok) {
+          loadUsersList(); // Refresh list
+        } else {
+          alert("Gagal menghapus akun: " + data.error);
+        }
+      } catch (e) { alert("Error jaringan: " + e.message); }
     }
 
     // ==================== MENU PENGAJUAN ====================
@@ -675,3 +718,4 @@
   </script>
 </body>
 </html>
+```
